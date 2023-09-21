@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>网络入门:网络是怎样连接的 · 容与的成长之路</title><meta name="description" content="这本书在豆瓣评分高达9.3，属于非常好的书一类。通过它，可以了解网络的全貌。
+0GET和POST
+端口号：web 80,邮件 25。
+URI的内容是网页的文件名或者CGI程序。
+HTTP常用的方法是GET,POST，POST的URI通常指向服务器的一个程序。GET能发送的数据只有几百字节，超过这个就"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>网络入门:网络是怎样连接的</a></h3></div><div class="post-content"><p>这本书在豆瓣评分高达9.3，属于非常好的书一类。通过它，可以了解网络的全貌。</p>
+<h4 id="0"><a href="#0" class="headerlink" title="0"></a>0</h4><h4 id="GET和POST"><a href="#GET和POST" class="headerlink" title="GET和POST"></a>GET和POST</h4><ul>
+<li>端口号：web 80,邮件 25。</li>
+<li>URI的内容是网页的文件名或者CGI程序。</li>
+<li>HTTP常用的方法是GET,POST，POST的URI通常指向服务器的一个程序。GET能发送的数据只有几百字节，超过这个就要使用POST。GET的消息体中不包含数据。</li>
+<li>HTTP头部字段中Host表示请求的服务器IP地址和端口号。</li>
+<li>响应消息中的状态吗2开头表示成功，4开头表示客户端错误，如404错误。</li>
+</ul>
+<h4 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h4><ul>
+<li>DNS作用是根据域名查询IP地址。</li>
+<li>TCP&#x2F;IP结构是由子网通过路由器连接起来的大网络。几台计算机由集线器连接起来构成子网。家用路由器内置了集线器功能。消息经由集线器发送到最近的路由器，再发往下一个路由器。</li>
+<li>IP地址是一串32比特的数字，8比特一组分为4组。</li>
+<li>子网掩码为1的部分表示网络号，为0的部分表示主机号。主机号全部为0代表整个子网，主机号全部为1代表向子网所有设备发包，即广播。</li>
+<li>不使用域名，只用IP地址，数字太难记。只用域名，字节数太长不固定降低效率。2者并用效率高，需要桥梁，就是DNS出现的原因。</li>
+<li>Socket库是提供网络功能的组件集合。</li>
+<li>还可以根据IP地址反查域名。</li>
+<li>域名还可分上下级。可以通过上级DNS服务器查询下级DNS服务器的IP地址。根域保存在所有DNS服务器里面。根域的IP地址全世界只有13个。</li>
+<li>DNS服务器还有缓存功能。</li>
+</ul>
+<h4 id="套接字、端口号"><a href="#套接字、端口号" class="headerlink" title="套接字、端口号"></a>套接字、端口号</h4><ul>
+<li>数据收发分为4个阶段，创建套接字，连接，通信，断开。服务器启动后就会创建好套接字，断开是客户端发起。通过描述符识别不同的套接字。</li>
+<li>套接字加上IP地址和端口号就可以识别具体那台计算机了。端口号是让对方能够识别出套接字的机制。连接开始时，客户端会将这个随便分配的端口号告诉服务器。</li>
+</ul>
+<h4 id="1"><a href="#1" class="headerlink" title="1"></a>1</h4><h4 id="协议栈"><a href="#协议栈" class="headerlink" title="协议栈"></a>协议栈</h4><ul>
+<li>浏览器、邮件一般使用TCP，DNS查询收发较短数据采用UDP.</li>
+<li>IP模块负责收发网络包，IP中还包含ICMP和ARP,ICMP用于告知网络包传送过程中产生的错误。ARP根据IP地址查询以太网MAC地址。</li>
+<li>套接字的实体是存放控制信息的内存空间。</li>
+<li>TCP头部，MAC头部，IP头部。头部用来记录和交换控制信息。</li>
+</ul>
+<h4 id="连接、SYN、ACK"><a href="#连接、SYN、ACK" class="headerlink" title="连接、SYN、ACK"></a>连接、SYN、ACK</h4><ul>
+<li>协议栈将服务器IP地址，端口号传递给TCP模块，客户端先创建一个包含控制信息的头部。接下来将头部中的SYN比特置为1，表示连接，交给IP模块发送。服务器收到后返回响应，头部设置跟客户端发来的一样，除此还要将ACK位置为1，表示收到客户端发来的网络包。客户端收到后，如果SYN为1表示连接成功，还要将ACK位置为1发回服务器，告诉服务器刚才的网络包已收到，服务器收到之后，连接完成。</li>
+</ul>
+<h4 id="发送、MTU、序号、窗口"><a href="#发送、MTU、序号、窗口" class="headerlink" title="发送、MTU、序号、窗口"></a>发送、MTU、序号、窗口</h4><ul>
+<li><p>发送时机有两个因素决定。1个是网络包的最大长度，MTU,在以太网中一般是1500字节，MTU是包含头部的总长度，减去头部的长度叫做MSS。第2个要素是时间，协议栈内部有个计时器，一定时间之后就发送包，即时数据没积累到MSS。浏览器一般是直接发送，不等到填满缓冲区。</p>
+</li>
+<li><p>TCP可以确认对方是否收到包，没收到需要重发。序号用来告知接收方网络包在全部数据中的起始位置，连接操作中，将SYN置1时，将随机的起始序号告诉对方。除了序号还要告知对方包的长度。接收方根据序号和长度算出一共收到多少字节，将这个数值写入ACK号中，发到发送方。</p>
+</li>
+<li><p>重传几次无效之后，TCP会强制结束通信，向应用程序报错。关于重传之前的等待时间，TCP会动态调整，根据发送数据时测量ACK的返回时间，动态调整。</p>
+</li>
+<li><p>滑动窗口。发送包等待送达确认，如果第二个包等待第一个包的送达确认，效率会很低，所以发送包是按频率发送的，并不等待送达确认。如果频率太块，会导致接收方处理数据的能力，造成接收方缓冲区溢出。所以接收方应该告诉发送方自己缓冲区还有多少空间，这个数据在TCP的窗口字段中，表示接收方还能接受的最大数据长度。ACK号和窗口更新返回可以合并，提高效率。</p>
+</li>
+</ul>
+<h4 id="断开、删除"><a href="#断开、删除" class="headerlink" title="断开、删除"></a>断开、删除</h4><ul>
+<li>无论哪一方先发起断开，需要将TCP头部中的FIN比特设为1发送，接收方表示收到需要返回ACK号，这个过程双方都要做。删除一般需要等待几分钟，防止断开发送失败，重传后来到达，等待就是等待重传失败。</li>
+</ul>
+<h4 id="IP模块、ARP、网卡、集线器、UDP"><a href="#IP模块、ARP、网卡、集线器、UDP" class="headerlink" title="IP模块、ARP、网卡、集线器、UDP"></a>IP模块、ARP、网卡、集线器、UDP</h4><ul>
+<li><p>集线器按照以太网规则传输，路由器根据IP规则传输。MAC头部用于以太网头部，IP头部用于IP协议。IP协议根据IP地址找出传输方向，委托以太网协议传输，根据MAC地址找出下一个传输设备。以太网的部分可以被替换成无线局域网、ADSL、FTTH.</p>
+</li>
+<li><p>IP模块添加MAC头部、IP头部。之后交给网卡，网卡将数字信息转换成电信号或者光信号传输出去。</p>
+</li>
+<li><p>IP头部中最重要的就是IP地址，接收方IP地址来源于应用程序。发送方IP地址根据计算机配备的网卡决定，计算机启动时会自动分配。路由表中有网关，代表下一个路由器的IP地址，默认网关是0.0.0.0。协议号06代表TCP,17代表UDP。</p>
+</li>
+<li><p>MAC头部中包含接收方发送方MAC地址，IP地址长度32比特，MAC头部48比特。MAC地址是网卡生产时写入ROM里的。</p>
+</li>
+<li><p>ARP根据IP地址查询MAC地址。使用广播的技术，将包发送给子网中所有设备来查询，查询时候放入ARP缓存中。ARP中缓存在几分钟之后会删除。</p>
+</li>
+<li><p>以太网中发送的包，所有设备都能收到。一开始是中继式集线器后来发展为交换式集线器，后者也叫交换机。交换式中信号只会流到指定的MAC地址的设备上，而不是所有设备。</p>
+</li>
+<li><p>网卡负责将数字信号转换为电信号或者光信号。网卡中保存着全世界唯一的MAC地址。网卡中的MAC模块会为数据包加上报头、起始帧分界符SFD，和FSC。MAC头部是由IP模块负责的，并不是网卡。报头用来测定读取时机，SFD用来确定帧的起始位置。</p>
+</li>
+<li><p>根据电流电压变化能还原出数据信号，但是如果数据是连续的0或1，就无法分辨信号的分界点了，所以使用时钟信号和数字信号叠加的方式。时钟信号是0和1交替的信号。找出时钟信号的周期就能分离数字和时钟信号的叠加信号，报头的作用就在这里。起始帧分界符是表示包起始位置的标记。FCS用来检测包传输中因为噪声导致的数据错误，是根据前面的数据来计算出来的，如果数据发生了变化，接收方算出来的FSC就会和数据中保存的不一致。</p>
+</li>
+<li><p>MAC模块转换之后，从PHY&#x2F;MAU模块发送出去，其功能就是将信号进行格式转换。双绞线的情况两台设备之间的距离不能超过100米。半双工模式下会发生信号碰撞，一旦碰撞还需要发送阻塞信号，所有发送操作会终止。等待一段时间后，再重新发送。</p>
+</li>
+<li><p>包接收时，如果IP模块检测到错误会发送ICMP消息告知发送方。IP还需要将分片的数据重组。</p>
+</li>
+<li><p>UDP用于数据很短，只有一个包，不需要重发的情况，例如DNS。UDP没有TCP中的确认、窗口机制，也不需要建立和断开连接，只要加上UDP头部交给IP模块就好了，错误时就重发一遍，最大能传输的数据大概是6M多。另外一种使用UDP的情况就是音频视频，在音频视频上，就算错误重发了也无法补救，重发也没意义，这时使用UDP效率更高。</p>
+</li>
+</ul>
+<h4 id="2"><a href="#2" class="headerlink" title="2"></a>2</h4><h4 id="双绞线、集线器、交换机、路由器"><a href="#双绞线、集线器、交换机、路由器" class="headerlink" title="双绞线、集线器、交换机、路由器"></a>双绞线、集线器、交换机、路由器</h4><ul>
+<li><p>信号在网线中传输会衰减，线路越长，衰减越严重。因为噪声而失真。双绞线就是为了抑制噪声。环境中的电磁波产生噪声。双绞使得线路电流相互抵消，从而抑制噪声。内部相邻的信号线会产生内部噪声，也就是串绕，串绕可以通过控制节距来抑制。</p>
+</li>
+<li><p>集线器把信号发送给所有连接的线路。交换机根据地址表进行转发，交换机端口的MAC模块不具有MAC地址。查找到MAC地址后，将信号发送到相应的端口。MAC地址表的维护是交换机自发维护。如果找不到，会转发到除了源端口之外的所有端口。</p>
+</li>
+<li><p>交换机的全双工模式同时进行发送和接受，不会发生碰撞。比半双工效率高。根据脉冲信号，将自己支持的模式和速率告知对方，这就是自动协商。</p>
+</li>
+<li><p>路由器的端口具有MAC地址和IP地址，根据IP地址判断转发目标。会忽略主机号，只匹配网络号。路由器只接收与自身MAC地址匹配的包，不匹配的直接丢弃。判断转发目标时，采用最长匹配，即从网络号比特数最长的开始。无法匹配，丢弃后通过ICMP通知发送方。子网掩码为0.0.0.0的记录表示默认路由，找不到匹配时选择默认路由。包有生存时间TTL，每经过一次路由这个值减一，减到0就丢弃。</p>
+</li>
+<li><p>IP中的分片是指对于网络包再拆分，如果包的长度大于端口MTU就需要分片，首先查看IP头部的字段看看是否可以分片，不能分片丢弃发ICMP消息，分片的话，每个分片数据前加上IP头部。</p>
+</li>
+<li><p>路由器发送时查看路由表的网关列，如果网关列内容是IP地址，此IP地址就是下一个转发目标，如果网关列为空，则IP头部中的接收方IP地址就是下一个转发目标。也是用ARP查询下一个目标的MAC地址。</p>
+</li>
+<li><p>路由器负责将包送达通信对象这一过程，其中交换器负责将包传输到下一个路由器这个传输过程。</p>
+</li>
+<li><p>路由器还有地址转换和包过滤的功能。内网使用私有地址，与互联网通信需要把私有地址改写为公有地址，根据端口号来区别私有地址中的设备。一个公有地址可以对应几万个私有地址。包过滤应用于防火墙等设备。</p>
+</li>
+</ul>
+<h4 id="3"><a href="#3" class="headerlink" title="3"></a>3</h4><h4 id="ADSL、光纤"><a href="#ADSL、光纤" class="headerlink" title="ADSL、光纤"></a>ADSL、光纤</h4><ul>
+<li><p>接入网方式包括，ADSL、FTTH、电话线等。互联网接入路由器在网络包前面加上MAC头部、PPPoE头部、PPP头部，然后发送给ADSL调制解调器。调制解调器将包拆分成信元，转换成电信号发送给分离器。调制采用振幅调制加相位调制结合的方式，并且使用多个波来提高速率。</p>
+</li>
+<li><p>分离器的作用是将电话信号和调制信号分离。DSLAM具有ATM接口，与路由器收发数据使用的是ATM信元格式。BAS负责将信元还原成网络包，并转发到会联网内部。</p>
+</li>
+<li><p>光纤的原理是将数字信号转换成电信号，再转换成光信号。根据纤芯直径不同，分为较细的单模光纤和粗的多模光纤。多模光纤传导多条光，单模光纤传导一条光。光纤越长越容易失真，单模光纤失真较小。多模光纤用于建筑物里面，单模光纤连接建筑物。</p>
+</li>
+<li><p>FTTH分为直连和分路2种方式。PPPoE是将PPP消息装入以太网包进行传输的方式。</p>
+</li>
+<li><p>互联网接入路由器通过PPPoE的发现机制查询BAS的MAC地址。BAS下发的TCP&#x2F;IP参数被配置到互联网接入路由器的BAS端的端口上。BAS收到用户路由器发送的网络包之后会去掉MAC头部和PPPoE头部，用隧道机制发送给运营商的路由器。互联网接入路由器将私有地址转换为公有地址。</p>
+</li>
+<li><p>PPPoA不添加MAC头部和PPPoE头部，直接将包装入信元中。DHCP不使用PPP,而是将以太网包直接转换成ADSL信号发送给DSLAM。</p>
+</li>
+<li><p>网络包接入网之后到达运营商POP的路由器。POP扩大规模之后就是NOC，NOC是运营商的核心设备。互联网内部使用BGP机制在运营商之间交换路由信息。IX将多个运营商汇聚在一起，</p>
+</li>
+</ul>
+<h4 id="4"><a href="#4" class="headerlink" title="4"></a>4</h4><h4 id="缓存服务器、负载均衡器、防火墙、代理、分发"><a href="#缓存服务器、负载均衡器、防火墙、代理、分发" class="headerlink" title="缓存服务器、负载均衡器、防火墙、代理、分发"></a>缓存服务器、负载均衡器、防火墙、代理、分发</h4><ul>
+<li><p>防火墙最普及的是包过滤方式的。通过接收方IP地址，发送方IP地址、接收方端口号、发送方端口号、控制位信息来判断是否允许某个包通过。</p>
+</li>
+<li><p>服务器性能不足时，需要使用负载均衡器。用缓存服务器分担负载。缓存服务器通过更新时间管理内容。缓存服务器收到请求之后会给服务器发送一个查询响应是否改变的消息，没有改变则从缓存中取数据。</p>
+</li>
+<li><p>正向代理，接收客户端的请求消息，再转发到互联网。可以查看消息内容，实现防火墙的功能。反向代理，能转发一段不包含完整网址的请求。透明代理是缓存。</p>
+</li>
+<li><p>内容分发服务，缓存服务器交给服务器运营者管理。找到最近的缓存服务器，然后重定向。服务器内容变化时，通知缓存服务器更新。</p>
+</li>
+</ul>
+<h4 id="5"><a href="#5" class="headerlink" title="5"></a>5</h4><h4 id="服务器"><a href="#服务器" class="headerlink" title="服务器"></a>服务器</h4><ul>
+<li><p>服务器系统有多任务、多线程的功能。描述符的作用，等待连接的套接字中没有客户端IP地址和端口号。网卡的MAC模块将网络包从信号还原为数字信息，检验FCS并存入缓冲区。</p>
+</li>
+<li><p>IP模块的接收，判断是不是发给自己的，判断是否分片，将包交给TCP模块或者UDP模块。</p>
+</li>
+<li><p>TCP处理连接包，确认TCP头部的控制位SYN,检查接收方端口号，为等待连接套接字复制一个副本，记录发送方IP地址和端口号。</p>
+</li>
+<li><p>TCP处理数据包，根据发送方IP地址，发送方端口号，接收方IP地址，接收方端口号，找到对应的套接字。将数据拼合起来保存在接收缓冲区中，向客户端返回ACK。</p>
+</li>
+<li><p>响应，将请求的URI转换成实际的文件名。web服务器还有访问控制，限制特定用户才能访问，如会员制。</p>
+</li>
+<li><p>响应的数据类型，Content-Type字段。text&#x2F;html是html文档，image&#x2F;jpeg JPEG格式的图片等。</p>
+</li>
+</ul>
+<h4 id="6"><a href="#6" class="headerlink" title="6"></a>6</h4><h4 id="术语解释"><a href="#术语解释" class="headerlink" title="术语解释"></a>术语解释</h4><table>
+<thead>
+<tr>
+<th align="center">简称</th>
+<th align="center">释义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">URL</td>
+<td align="center">统一资源定位符</td>
+</tr>
+<tr>
+<td align="center">FTP</td>
+<td align="center">文件传送协议</td>
+</tr>
+<tr>
+<td align="center">HTTP</td>
+<td align="center">超文本传输协议</td>
+</tr>
+<tr>
+<td align="center">URI</td>
+<td align="center">统一资源标识符</td>
+</tr>
+<tr>
+<td align="center">DNS</td>
+<td align="center">域名服务系统</td>
+</tr>
+<tr>
+<td align="center">SFD</td>
+<td align="center">起始帧分界符</td>
+</tr>
+<tr>
+<td align="center">FCS</td>
+<td align="center">帧校验序列</td>
+</tr>
+<tr>
+<td align="center">ARP</td>
+<td align="center">地址解析协议</td>
+</tr>
+<tr>
+<td align="center">ICMP</td>
+<td align="center">控制报文协议</td>
+</tr>
+<tr>
+<td align="center">ADSL</td>
+<td align="center">不对称数字用户线</td>
+</tr>
+<tr>
+<td align="center">FTTH</td>
+<td align="center">光纤到户</td>
+</tr>
+<tr>
+<td align="center">DHCP</td>
+<td align="center">动态主机配置协议</td>
+</tr>
+</tbody></table>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-05-26</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/专业技术/" title="专业技术">专业技术 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2017/05/26/网络入门-网络是怎样连接的/,容与的成长之路,网络入门:网络是怎样连接的,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2017/06/03/%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8%E3%80%90%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3%E3%80%91/" title="算法入门【算法图解】">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2017/04/28/%E5%88%98%E6%9C%AA%E9%B9%8F%E3%80%90%E6%9A%97%E6%97%B6%E9%97%B4%E3%80%91/" title="刘未鹏【暗时间】">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>iOS【多线程和内存管理】 · 容与的成长之路</title><meta name="description" content="ARC
+ARC(automatic reference counting)，自动引用计数，编译器进行内存管理，降低程序崩溃，内存泄露。
+NSObject (+alloc -retain -release -dealloc)
+自己生成对象，自己持有。(alloc、new、copy、mutableCop"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>iOS【多线程和内存管理】</a></h3></div><div class="post-content"><h3 id="ARC"><a href="#ARC" class="headerlink" title="ARC"></a>ARC</h3><ul>
+<li>ARC(automatic reference counting)，自动引用计数，编译器进行内存管理，降低程序崩溃，内存泄露。</li>
+<li>NSObject (+alloc -retain -release -dealloc)</li>
+<li>自己生成对象，自己持有。(alloc、new、copy、mutableCopy)，这些方法以及用这些方法开头的方法。非这几个或开头创建的对象使用autorelease，可以创建但不持有</li>
+<li>copy、mutableCopy:利用NSCopying方法copyWithZone:方法和NSMutableCopying方法mutableCopyWithZone:方法。也生成并持有对象，区别在于生成的对象可变更和不可变更。</li>
+<li>retain、release、autorelease.</li>
+<li>autorelease,不立即释放，注册到autoreleasepool中，pool结束时释放。</li>
+<li>释放非自己持有的对象，会崩溃</li>
+<li>-retainCount 获取引用计数，release之后计数为0会执行dealloc方法</li>
+<li>oc实现，引用计数和对象内存地址存储在散列表里，通过散列表能找到各引用计数和对象的地址。</li>
+<li>废弃NSAutoreleasePool时，调用过autorelease方法的对象都将调用release方法。[pool drain]</li>
+<li>NSRunLoop程序主循环，对NSAutoreleasePool对象生成、持有、释放</li>
+<li>for循环可能会产生大量autorelease对象，可适当生成和释放NSAutoreleasePool对象</li>
+<li>IMP Caching:取类名，方法名，函数指针。运行效率快</li>
+<li>pool嵌套，使用的是最内层的pool执行autorelease</li>
+<li>autorelease对象 实际是被加到pool对象的数组里，drain时会对数组中所有对象执行release</li>
+<li>NSAutoreleasePool类方法showPools检查对象是否已经被autorelease</li>
+<li>不能对NSAutoreleasePool对象执行autorelease，会抛出异常，因为NSAutoreleasePool已经重载了autorelease实例方法</li>
+<li>id相当于c语言中的void *</li>
+<li><code>__strong、__weak、__unsafe_unretained、__autoreleasing</code> 4种修饰符</li>
+<li><code>__strong</code>ARC有效时默认修饰符，不写就默认有,id __strong obj,:(id __strong)obj（做参数时）</li>
+<li><code>id __strong obj;</code>等同于<code>id __strong obj = nil; </code>，<code>__weak、__autoreleasing</code> 也同样</li>
+<li><code>__weak</code>是解决循环引用问题的，循环引用会导致内存泄露，内存泄露就是对象超出生存周期依然存在</li>
+<li>自引用，持有自身。</li>
+<li>使用<code>__weak</code>不会持有对象。直接用<code>__weak</code>引用编译器会告警，应该先用<code>__strong</code>引用，再赋值给<code>__weak</code>变量</li>
+<li><code>__weak</code>引用的对象被释放，则其修饰的变量会自动置为nil</li>
+<li><code>__unsafe_unretained</code>是<code>__weak</code>在iOS5以下版本的代替</li>
+<li><code>__unsafe_unretained</code>也不持有对象，直接使用会告警。其引用的对象被释放，其修饰的变量不会自动置为nil。所以访问<code>__unsafe_unretained</code>修饰的变量，有可能会崩溃，需要确保其引用的对象存在，才没问题。</li>
+<li>ARC有效时，不能使用autorelease方法，也不能用NSAutoreleasePool类。</li>
+<li>ARC有效时，用@autoreleasepool {} 块替代NSAutoreleasePool类生成持有废弃。用<code>__autoreleasing</code>修饰变量代替调用autorelease方法。显示使用<code>__autoreleasing</code>同显式使用<code>__strong</code>罕见</li>
+<li>编译器检查方法名是否以（alloc、new、copy、mutableCopy）开头，决定是否将返回值的对象注册到自动释放池。</li>
+<li>在访问<code>__weak</code>修饰的变量时，实际会将要访问的对象注册到自动释放池，以防因为是弱引用，而对象又被废弃了</li>
+<li>id的指针或对象的指针，<code>id *obj</code> 和 <code>NSObject **obj</code>,实际会被附上<code>__autoreleasing</code>修饰符变成<code>id __autoreleasing *obj</code>和<code>NSObject* __autoreleasing *obj</code></li>
+<li><code>NSError *error = nil; </code> <code>&amp;error</code> 等同于 <code>NSError **</code>类型</li>
+<li>使用<code>__autoreleasing</code>修饰符的变量作为参数，也会注册到自动释放池</li>
+<li>赋值给对象指针时，所有权修饰符必须一致。<code>NSError *error = nil; NSError * __strong *pError = &amp;error; </code>不加<code>__strong</code>编译器会报错。同理，<code>__weak</code>和<code>__unsafe_unretained</code>也一样<code>NSError __weak *error = nil;NSError * __weak *pError = &amp;error; </code></li>
+<li>非显式声明的<code>__strong</code>变量作为方法参数中的对象指针类型，会被编译器自动转换为<code>__autoreleasing</code></li>
+<li>对象指针作为参数虽然可以声明为<code>__strong</code>类型，但最好不要这样做，因为这不符合内存管理的思考方式。还是以<code>__autoreleasing</code>好</li>
+<li><code>__autoreleasing</code>修饰变量，必须为自动变量（局部变量、函数、方法参数）</li>
+<li>@autoreleasepool {} 也能嵌套使用，ARC无效其也能使用，推荐用@autoreleasepool</li>
+<li>NSRunLoop实现，随时能释放自动释放池中的对象</li>
+<li>_objc_autoreleasePoolPrint()，调试用的非公开函数</li>
+<li>ARC下，不能用retain&#x2F;release&#x2F;retainCount&#x2F;autorelease.使用会出现编译错误，dealloc也是</li>
+<li>ARC下，除(alloc、new、copy、mutableCopy)还有init需返回自己持有的对象。特例 - (void)initialize;</li>
+<li>dealloc适用于释放c语言库分配的内存、删除代理、观察者对象。</li>
+<li>ARC下，dealloc里不能调用 [super dealloc]</li>
+<li>oc对象不能作为c语言结构体成员，会引起编译报错，如果要用，可转为void *或加<code>__unsafe_unretained</code>修饰，因为其不属于编译器的内存管理对象，但用这个有隐患，可能造成程序崩溃或内存泄露</li>
+<li>ARC下，void * 和id转换，需要用<code>__bridge</code>,<code>void *p = (__bridge void*)obj;id o = (__bridge id)p</code>,这样转成void*安全性也很低，例如空指针导致崩溃</li>
+<li><code>__bridge_retained</code>赋值时增加持有对象，与retain相似</li>
+<li><code>__bridge_transfer</code>赋值时释放持有对象，与release相似</li>
+<li>这些转换多数用于oc对象与core foundation（c语言编写框架）对象转换时</li>
+<li>CFRetain&#x2F;CFRelease,CFBridgingRetain()和<code>__bridge_retained</code>一样的作用,CFBridgingRelease和<code>__bridge_transfer</code>一样的作用，做转换时必须恰当使用</li>
+<li>属性修饰中，copy、retain、strong 相当于给使用<code>__strong</code>修饰符的变量赋值。assign、unsafe_unretained 相当于<code>__unsafe_unretained</code>，weak相当于<code>__weak</code></li>
+<li>属性中带copy不是简单的赋值，是复制对象</li>
+<li>C语言中使用动态数组，<code>id __strong *array = nil;</code> <code>__strong</code>必要显示声明，不显示默认为<code>__autoreleasing</code>,初始化必须为nil，指针类型不会自动置nil。分配内存用calloc函数，可使分配区域初始化为0(malloc函数还需用memset函数将内存填充为0，malloc不可将数组元素置nil，可能导致释放不存在的对象，推荐用calloc函数)，释放时还必须释放每个数组元素，不能仅释放数组内存。动态数组不归编译器管，静态数组归编译器管。需要将数组元素置nil再释放数组。memcpy和realloc也不要用，会引起内存泄露和重复废弃。<code>__weak</code>可修饰动态数组，<code>__autoreleasing</code>不可，<code>__unsafe_unretained</code>可用于C语言的指针</li>
+<li>objc_retainAutorelesedReturnValue和objc_autoreleaseReturnValue函数不将对象注册到自动释放池直接传递，最优化</li>
+<li><code>__weak</code>修饰的变量引用的对象如果被释放，则变量自动置nil.使用<code>__weak</code>修饰的变量，会自动注册到自动释放池</li>
+<li>weak散列表，objc_storeWeak函数</li>
+<li>如大量使用<code>__weak</code>修饰符的变量，会消耗cpu资源，所有只在要避免循环引用时使用</li>
+<li><code>__weak</code>不能修饰刚创建的对象，因为会立即被释放，并将变量置nil</li>
+<li><code>__weak</code>修饰的变量被使用时，实际会先retain对象，并注册到自动释放池。多次使用多次注册，最好先赋值给<code>__strong</code>修饰的变量再用</li>
+<li>NSMachPort类不支持<code>__weak</code>，有自己的引用计数机制，使用的话编译器会报错</li>
+<li>allowsWeakReference返回NO程序将异常终止、retainWeakReference返回NO，将无法获取<code>__weak</code>引用的对象，将返回nil</li>
+<li>_objc_rootRetainCount函数获取计数数值，但有时是不准确的，多线程竞争状态、对象被释放、不正确的地址等</li>
+</ul>
+<h3 id="Blocks"><a href="#Blocks" class="headerlink" title="Blocks"></a>Blocks</h3><ul>
+<li>带局部变量值的匿名函数</li>
+<li>范式：^ 返回值类型 参数列表 表达式</li>
+<li>返回值类型可省略，要么是表达式return语句返回值的类型，要么是void类型</li>
+<li>参数列表可省略，使用参数时，^{}（2个都省略）</li>
+<li>函数指针：<br><code>int func(int count) &#123; return count + 1; &#125; int (*funcptr)(int) = &amp;func; </code><br>函数指针调用并赋值：<code>int result = (*funcptr)(10);</code></li>
+<li>blockl类型变量：<code>int (^blk)(int) = ^(int count)&#123;return count+1;&#125;;</code> <code>int (^blk1)(int) = blk;</code></li>
+<li>可做函数参数、返回值使用，记述方式复复杂，可用typedef解决</li>
+<li><code>typedef int (^blk_t)(int);</code> <code>void func(int (^blk)(int))</code>变为<code>void func(blk_t blk)</code> <code>int (^func())(int)</code> 变为<code>blk_t func()</code></li>
+<li>block类型变量指针：<code>blk_t *blkptr = &amp;blk; (*blkptr)(10);</code></li>
+<li>block中使用局部变量，截获的是局部变量的瞬间值。即使这些值后面被改也不影响block截获的值</li>
+<li>block表达式中改写外部变量的值，会产生编译错误。若想改，必须给外部变量声明<code>__block</code>说明符<code>__block int val = 0;</code></li>
+<li>向截获的外部可变数组中插值，不会有问题，但向该数组赋值会有问题</li>
+<li>block表达式中使用c语言数组，例如<code>cosnt char text[] = &quot;hello&quot;;</code>使用text[2]有问题，使用指针可以,<code>cosnt char *text = &quot;hello&quot;;</code>再使用text[2]可以</li>
+<li>objc_msgSend函数，从对象持有类的结构体中检索函数指针并调用</li>
+<li>block实质是oc对象，block调用实质是用函数指针调用函数</li>
+<li>id、Class都是结构体指针</li>
+<li>oc类与对象的实质：类的结构体指针,class_t包含成员变量、方法名、方法实现、属性、父类指针</li>
+<li>block的局部变量截获，只针对表达式中使用了的变量，没使用的不截获</li>
+<li>截获的实质是，执行block语法时，表达式使用的变量被保存到block的结构体实例</li>
+<li>c语言中的静态变量、静态全局变量、全局变量，允许block改写值 <code>static</code></li>
+<li><code>static</code>表示作为静态变量存储在数据区中 <code>auto</code>表示作为自动变量存储在栈中</li>
+<li>加<code>__block</code>，会使变量转为结构体实例。多个block中可使用同一个__block变量，同一个block中使用多次__block变量</li>
+<li>block可存储在栈上、堆上、数据区上(.data区)。在记述全局变量的地方使用block语法，就是存储在数据区上。另一个，block不截获自动变量时，也可以存储在数据区。</li>
+<li>除去上两种之外，存储在栈上。栈上的block，变量作用域结束，block就该被废弃。但可以通过复制到堆上，即使变量作用域结束，堆上的block和__block变量还可以继续存在。</li>
+<li><code>__block</code>变量的结构体成员变量<code>__forwarding</code>可以实现<code>__block</code>变量配置在堆上和栈上都能正确访问<code>__block</code>变量</li>
+<li>ARC下，将block作为函数返回值返回时编译器会自动生成复制到堆上的代码</li>
+<li>将block作为方法参数使用，编译器不能自动判断生成代码。</li>
+<li>cocoa框架的usingBlock和gcd中的api不需要手动复制</li>
+<li>需要手动复制的时候，给block 调 copy 方法就行。不能将所有栈上的block都复制到堆上，因为在栈上也能使用的block复制到堆上，会浪费cpu资源</li>
+<li>存在数据区的block调copy什么也不做，堆上的block调copy方法，引用计数加1</li>
+<li>多次调copy也没有问题，不确定是否要copy时，copy一下不会有任何问题</li>
+<li><code>__block</code>变量跟随block被从栈复制到堆，并被block持有，被多个block持有，增加<code>__block</code>变量的引用计数</li>
+<li>栈上和堆上同时有<code>__block</code>变量，在block内部和外部访问<code>__block</code>变量，访问的是同一个，即堆上的<code>__block</code>变量，栈上的<code>__forwarding</code>指向堆上的结构体实例地址</li>
+<li>__main_block_copy_0 和 __main_block_dispose_0 函数，是block中的相当于retain和release作用的函数，block从栈复制到堆时调copy，堆上的block被废弃时调dispose</li>
+<li>block从栈复制到堆的几种情况：调用block的copy方法，block作为函数返回值，赋值给类的__strong的id类型或block类型变量，方法名带usingBlock的方法里传递block时。这4种实际上都是调用_Block_copy函数，从栈复制到堆</li>
+<li><code>__block</code>和持有__strong修饰的对象不同之处，参数不同，BLOCK_FIELD_IS_OBJECT和BLOCK_FIELD_IS_BYREF</li>
+<li>调用copy才会持有截获的对象，不然对象无法超出变量作用域而存在</li>
+<li><code>__block</code>和__strong一起使用，作用的<code>__block</code>一样。<code>__block</code>和__weak一起使用，作用域结束时，__weak修饰的对象会被置为nil。<code>__unsafe_unretained</code>和<code>__block</code>一起使用，注意空指针，<code>__block</code>不可与<code>__autoreleasing</code>一起使用，会报编译错误</li>
+<li>block的循环引用，类成员变量是block类型，block中持有类的对象，可以通过<code>__weak</code>和<code>__unsafe_unretained</code>避免循环引用，注意引用了类的其他成员变量，也会造成循环引用</li>
+<li>使用__block也可避免循环引用，但要在block语句中执行置nil操作，且要执行block</li>
+</ul>
+<h3 id="GCD"><a href="#GCD" class="headerlink" title="GCD"></a>GCD</h3><ul>
+<li>serial queue 和 concurrent queue，串行和并行队列</li>
+<li>多个serial queue可并行执行</li>
+<li>线程过多会降低系统的响应性能</li>
+<li>仅在多个线程更新相同资源导致数据竞争时使用serial queue</li>
+<li>serial queue比concurrent queue能生成更多的线程</li>
+<li>生成concurrent queue<code>dispatch_queue_create(&quot;&quot;, DISPATCH_QUEUE_CONCURRENT)</code></li>
+<li>生成serial queue <code>dispatch_queue_create(&quot;&quot;, NULL)</code></li>
+<li>dispatch_queue_t 类型</li>
+<li>队列必须自己释放，dispatch_release(),dispatch_retain()</li>
+<li>dispatch_async()追加的block，即使执行dispatch_release()，也不会立即废弃队列，因为block也持有队列，执行完block才会废弃</li>
+<li>含有create的api,有必要释放</li>
+<li>main dispatch queue 是 serial queue，在主线程的runLoop中执行</li>
+<li>global dispatch queue 4个优先级，高high、默认default、低low、后台background</li>
+<li><code>dispatch_get_main_queue()</code> <code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)</code><br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0)</code><br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0)</code><br><code>dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0)</code></li>
+<li>系统级的main dispatch queue和global dispatch queue 不需要retain\release</li>
+<li>create生成的queue使用global queue默认优先级相同优先级的线程，要改变优先级用<code>dispatch_set_target_queue(queue1,queue2)</code> queue1是欲设置优先级的队列，queue2是同优先级的目标队列，queue1需要为create生成的</li>
+<li>dispatch_set_target_queue还会改执行层次，多个serial queue指定同一个serial queue，并行执行的多个serial queue会在目标queue上同时只执行一个</li>
+<li><code>dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW,3ull * NSEC_PER_SEC); dispatch_after(time,dispatch_get_main_queue(),^&#123;&#125;); </code></li>
+<li>runloop每隔1&#x2F;60秒执行，这个时间延迟只是大致，不精确</li>
+<li>ull是c语言数值字面量，表示unsigned long long</li>
+<li>NSEC_PER_SEC单位是秒，NSEC_PER_MSEC单位是毫秒</li>
+<li>dispatch_time_t 类型的值也可由NSDate对象转化来，使用struct timespec类型以及dispatch_walltime()函数，见155页</li>
+<li><code>dispatch_group_t group = dispatch_group_create(); dispatch_group_async(group, queue, ^&#123;&#125;); dispatch_group_nofity(group,dispatch_get_main_queue(),^&#123;&#125;);   dispatch_release(group);</code></li>
+<li>用group可以处理多个并行执行，监测结束做结束处理</li>
+<li>group带create结束需要释放，追加的block也持有group,所以group使用结束立即释放没问题</li>
+<li>dispatch_group_wait函数，<code>dispatch_group_wait(group,DISPATCH_TIME_FOREVER);</code>第二参数为等待时间属于dispatch_time_t类型，这里为永久等待。</li>
+<li>long result &#x3D; dispatch_group_wait(group,time);返回值不为0，意味着未结束,二参为DISPATCH_TIME_FOREVER时，结果恒为0。wait函数会阻塞线程，参数为NOW时，不等待</li>
+<li><code>dispatch_barrier_async(queue, blk);</code></li>
+<li>使用concurrent queue和barrier函数，可实现数据库访问和文件访问，barrier相当于插入到并行队列中的单个处理，会等待插入之前的处理全部结束，然后单独执行barrier处理，之后再继续插入之后的并行处理</li>
+<li>dispatch_sync函数，也会阻塞线程</li>
+<li>死锁问题：<code>dispatch_sync(mainQueue, ^&#123;&#125;); dispatch_async(mainQueue,^&#123;   dispatch_sync(mainQueue, ^&#123;&#125;);   &#125;);</code></li>
+</ul>
+<p><code>dispatch_async(serialQueue,^&#123;   dispatch_sync(serialQueue, ^&#123;&#125;);&#125;); </code></p>
+<ul>
+<li><code>dispatch_apply(10,queue,^(size_t index)&#123;&#125;)</code>执行多次，并等待全部执行结束。在dispatch_async中使用使用apply,162页</li>
+<li>dispatch_suspend(queue); dispatch_resume(queue); 挂起对已执行的处理没影响，未执行的处理会停止，恢复会继续执行</li>
+<li><code>dispatch_semaphore_t semaphore = dispatch_semaphore_create(1);</code>计数为0时等待，大于0减1不等待。</li>
+<li><code>dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)</code>等待计数大于等于1，减1并从函数返回。返回不为0等待，为0继续。</li>
+<li>dispatch_semaphore_signal(semaphore);给计数加1，处理前等待，处理后+1</li>
+<li><code>static dispatch_once_t pred; dispatch_once(&amp;pred,^&#123;&#125;);</code> 生成单例时使用</li>
+<li>178页代码</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-02-26</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/专业技术/" title="专业技术">专业技术 </a><a class="tag" href="/tags/iOS/" title="iOS">iOS </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2023/02/26/iOS【多线程和内存管理】/,容与的成长之路,iOS【多线程和内存管理】,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/03/09/iOS%E3%80%90AVFoundation%E3%80%91/" title="iOS【AVFoundation】">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/07/02/iOS%E3%80%9052%E4%B8%AA%E6%96%B9%E6%B3%95%E3%80%91/" title="iOS【52个方法】">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

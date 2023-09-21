@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>计算机是怎样跑起来的【计算机知识大纲】 · 容与的成长之路</title><meta name="description" content="知识点
+GBK字符编码，汉字占用2字节。UTF-8，3个字节。
+硬件由大量IC(集成电路)组成，上的引脚，有的用于输入，有的用于输出。
+编译：把编程语言编写的文件(源文件)转换成机器语言编写的文件。
+.NET是微软提出的技术。
+2种编程方法：面向组件编程、面向对象编程。
+GUI(图形用户界面)
+
+算"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>计算机是怎样跑起来的【计算机知识大纲】</a></h3></div><div class="post-content"><h4 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h4><ul>
+<li>GBK字符编码，汉字占用2字节。UTF-8，3个字节。</li>
+<li>硬件由大量IC(集成电路)组成，上的引脚，有的用于输入，有的用于输出。</li>
+<li>编译：把编程语言编写的文件(源文件)转换成机器语言编写的文件。</li>
+<li>.NET是微软提出的技术。</li>
+<li>2种编程方法：面向组件编程、面向对象编程。</li>
+<li>GUI(图形用户界面)</li>
+</ul>
+<h4 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h4><ul>
+<li>字符串的末尾用0表示，链表的末尾用-1，这些特殊字符是哨兵。</li>
+<li>辗转相除法，机械求解最大公约数。2种方式，减法和除法。减法：2数中大数减去小数，直到两数相等，相等的这个数就是最大公约数。</li>
+<li>典型算法。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">辗转相除法</td>
+<td align="center">求最大公约数</td>
+</tr>
+<tr>
+<td align="center">埃拉托斯特尼筛法</td>
+<td align="center">判定素数</td>
+</tr>
+<tr>
+<td align="center">顺序查找、二分查找、哈希查找</td>
+<td align="center">检索数据</td>
+</tr>
+<tr>
+<td align="center">冒泡排序、快速排序</td>
+<td align="center">数据排序</td>
+</tr>
+</tbody></table>
+<ul>
+<li>最小公倍数。2数乘积除以最大公约数。</li>
+<li>埃拉托斯特尼筛法，用待判定的数除以比它小的所有正整数，余数为零，可以整除，不是素数。利用的是计算机的处理速度，同样适用于计算鸡兔同笼问题。</li>
+<li>执行时间短的算法更优秀。如，判定素数，只需要从2到待判定数的平方根即可。</li>
+<li>线性搜索，从头到尾依次查找。哨兵，多用于此。加个特殊元素，减少判定次数。</li>
+<li>数字间的规律，如石头剪刀布游戏判定输赢，0、1、2表示三情况，B+1除以3的余数与A相等，就是B获胜。</li>
+</ul>
+<h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><ul>
+<li>栈和队列，栈存取形式是LIFO(后进先出)，队列是FIFO（先进先出）。</li>
+<li>每个存储单元，8比特数据。</li>
+<li>数组应用于线性搜索、冒泡排序。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (i = <span class="number">999</span>; i &gt; <span class="number">0</span>, i--) &#123;</span><br><span class="line">  <span class="keyword">for</span> (j = <span class="number">0</span>, j &lt; i, j++) &#123;</span><br><span class="line">    <span class="keyword">if</span>(x[i] &gt; x[j]) &#123;</span><br><span class="line">      tmp = x[i];</span><br><span class="line">      x[i] = x[j];</span><br><span class="line">      x[j] = tmp;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>典型数据结构</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">特征</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">栈</td>
+<td align="center">小山堆积一样</td>
+</tr>
+<tr>
+<td align="center">队列</td>
+<td align="center">排成一队</td>
+</tr>
+<tr>
+<td align="center">链表</td>
+<td align="center">任意改变数据排列顺序</td>
+</tr>
+<tr>
+<td align="center">二叉树</td>
+<td align="center">把数据分为两路排列</td>
+</tr>
+</tbody></table>
+<ul>
+<li>二叉树是链表的特殊形态。</li>
+<li>数组可以转化为栈或队列。</li>
+<li>栈需要一个数组，一个变量。变量是索引，指向栈顶数据，是栈顶指针。数组、栈顶指针、入栈函数、出栈函数组成了栈。注意：栈顶指针指向的不是栈里顶端上的数据的地址，实际上是这个数据上面的地址。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> Stack[<span class="number">100</span>];</span><br><span class="line"><span class="type">char</span> StackPointer = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*入栈函数*/</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">Push</span><span class="params">(<span class="type">char</span> Data)</span> &#123;</span><br><span class="line">  Stack[StackPointer] = Data;</span><br><span class="line">  StackPointer++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*出栈函数*/</span></span><br><span class="line"><span class="type">char</span> <span class="title function_">Pop</span><span class="params">()</span> &#123;</span><br><span class="line">  StackPointer--;</span><br><span class="line">  <span class="keyword">return</span> Stack[StackPointer];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>队列。数组、存放队头数据索引的变量、存放队尾数据索引的变量、存取函数。尾部存储满到最后，会折回数组的开头。逻辑结构变成圆环，循环利用。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> Queue[<span class="number">100</span>];</span><br><span class="line"><span class="type">char</span> SetIndex = <span class="number">0</span>;</span><br><span class="line"><span class="type">char</span> GetIndex = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">Set</span><span class="params">(<span class="type">char</span> Data)</span> &#123;</span><br><span class="line">  Queue[SetIndex] = Data;</span><br><span class="line">  SetIndex++;</span><br><span class="line">  <span class="keyword">if</span> (SetIndex &gt;= <span class="number">100</span>) &#123;</span><br><span class="line">    SetIndex = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> <span class="title function_">Get</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="type">char</span> Data;</span><br><span class="line">  Data = Queue[GetIndex];</span><br><span class="line">  GetIndex++;</span><br><span class="line">  <span class="keyword">if</span> (GetIndex &gt;= <span class="number">100</span>) &#123;</span><br><span class="line">    GetIndex = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> Data;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>链表。c语言中用自我引用的结构体组成的数组表示链表。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">TestResult</span> &#123;</span></span><br><span class="line">  <span class="type">char</span> Chinese;</span><br><span class="line">  <span class="type">char</span> Math;</span><br><span class="line">  <span class="type">char</span> English;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">TestResult</span>* <span class="title">Ptr</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>二叉树。有2个自我引用结构体的链表。用于搜索数据的算法，如二分查找，更快。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">TestResult</span> &#123;</span></span><br><span class="line">  <span class="type">char</span> Chinese;</span><br><span class="line">  <span class="type">char</span> Math;</span><br><span class="line">  <span class="type">char</span> English;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">TestResult</span>* <span class="title">Ptr1</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">TestResult</span>* <span class="title">Ptr2</span>;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h4><ul>
+<li>缩写为OOP。C++在C的基础上增加了面向对象的机制。Java、C# 是对C++进一步改良。</li>
+<li>结构体，操作数据的函数在外部。而面向对象编程可以把函数也放在内部。技巧有封装、继承、多态。</li>
+<li>面向对象编程和面向过程编程是一对反义词。</li>
+<li>多态指的是，针对同一消息，不同对象可以进行不同的操作。</li>
+<li>.NET支持C#</li>
+</ul>
+<h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><ul>
+<li>DBMS缩略语。一张表由行和列组成，列被称为字段、属性，行被称为记录、元组。</li>
+<li>SQL，结构化查询语言。</li>
+<li>关系型数据库。</li>
+<li>客户端、服务端。</li>
+<li>主键和复合主键(多个字段组成)</li>
+<li>CRUD.插入（CREATE）获取(REFER)更新（UPDATE）删除（DELETE）</li>
+</ul>
+<h4 id="TCP-IP网络"><a href="#TCP-IP网络" class="headerlink" title="TCP&#x2F;IP网络"></a>TCP&#x2F;IP网络</h4><ul>
+<li>LAN（局域网）</li>
+<li>传输控制协议和网际协议(TCP&#x2F;IP)</li>
+<li>MAC地址：网卡编号</li>
+<li>WAN（广域网）</li>
+<li>集线器连接计算机，路由器连接互联网。</li>
+<li>以太网网卡</li>
+<li>CSMA&#x2F;CD 带冲突检测的载波监听多路访问，是连接LAN计算机的方法。多路复用，是多个设备同时访问传输介质。</li>
+<li>MAC地址由厂商编号和产品编号组成，每个都独一无二。</li>
+<li>IP地址是软件上的编号。TCP&#x2F;IP中传输数据都要带MAC地址和IP地址。IP地址是32比特的整数，8个一组，分4段。IP地址的范围，0.0.0.0~255.255.255.255.前三段是网络地址，后一段是主机地址。子网掩码就是标识出网络地址和主机地址。子网掩码转换的二进制数中，值为1表示网络地址，0的表示主机地址。与MAC地址一样，IP地址也是唯一的。</li>
+<li>DHCP（动态主机设置协议）服务器获取IP地址和子网掩码。</li>
+<li>默认网关存放路由器的IP地址。</li>
+<li>DNS(域名系统)，解析域名为IP地址的服务器。其中记录着域名和IP地址的对应表。</li>
+<li>ARP（地址解析协议），把IP地址转换为MAC地址。使用广播的形式。也有缓存表，记录对应表。</li>
+<li>IP协议指定目标IP地址和路由器转发。TCP协议是双方相互回应确认信号，可靠传输数据。称作握手。通过包这种数据单元。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">MAC信息</td>
+<td align="center">IP信息</td>
+<td align="center">TCP信息</td>
+<td align="center">数据</td>
+<td align="center">错误检查信息</td>
+</tr>
+</tbody></table>
+<ul>
+<li>网卡-设备驱动程序-IP协议程序-TCP协议程序-应用程序。层级结构。</li>
+<li>TCP端口号识别上层的应用程序。web使用80，发送邮件25，接收邮件使用110.</li>
+</ul>
+<h4 id="数据加密"><a href="#数据加密" class="headerlink" title="数据加密"></a>数据加密</h4><ul>
+<li>秘钥，用于加密和解密的数字。</li>
+<li>XOR，逻辑异或运算。二进制，同则0，不同则1.</li>
+<li>对称密钥加密技术，特征是加解密密钥相同。密钥的通知不安全，不适用于互联网。</li>
+<li>公开密钥加密技术。加密密钥公开，解密密钥私有。公钥和私钥。</li>
+<li>RSA，实现公开密钥加密技术的算法，三个字母代表三个三个发明者。</li>
+<li>数字签名。MD5,信息摘要。</li>
+</ul>
+<h4 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h4><ul>
+<li>可扩展标记语言。元语言。</li>
+<li>HTML，超文本标记语言。</li>
+<li>&lt; &gt; &amp; “ ‘ 5个特殊字符用&amp;lt &amp;gt &amp;amp &amp;quot &amp;apos 表示。<![CDATA[  ]]> 括起来就可以直接使用上述5种特殊字符了。<!-- --> 表示注释。</li>
+<li>W3C(万维网联盟)</li>
+<li>CSV，只记录了信息，没有给信息赋予意义，比XML差一筹。</li>
+<li>XML命名空间。xmlns&#x3D;命名空间 的形式。</li>
+<li>SOAP（简单的对象访问协议）用于分布式计算。分布式就是把程序分散在网络连接起来的计算机上。</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2017-03-10</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/专业技术/" title="专业技术">专业技术 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2017/03/10/计算机是怎样跑起来的【计算机知识大纲】/,容与的成长之路,计算机是怎样跑起来的【计算机知识大纲】,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2017/04/28/%E5%88%98%E6%9C%AA%E9%B9%8F%E3%80%90%E6%9A%97%E6%97%B6%E9%97%B4%E3%80%91/" title="刘未鹏【暗时间】">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2016/08/07/%E4%B9%94%E5%B8%83%E6%96%AF%E4%BC%A0/" title="乔布斯传">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>iOS【Swift官方文档】第四篇 · 容与的成长之路</title><meta name="description" content="2.2 词法结构
+二进制字面量加 0b，八进制字面量加 0o，十六进制字面量加 0x
+1.25e2 表示 1.25 x 10²，1.25e－2 表示 1.25 x 10¯²。0xFp2 表示 15 x 2²，0xFp-2 表示 15 x 2¯²
+浮点数默认 Double 即64位浮点数，也有Floa"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>iOS【Swift官方文档】第四篇</a></h3></div><div class="post-content"><h3 id="2-2-词法结构"><a href="#2-2-词法结构" class="headerlink" title="2.2 词法结构"></a>2.2 词法结构</h3><ul>
+<li>二进制字面量加 0b，八进制字面量加 0o，十六进制字面量加 0x</li>
+<li>1.25e2 表示 1.25 x 10²，1.25e－2 表示 1.25 x 10¯²。0xFp2 表示 15 x 2²，0xFp-2 表示 15 x 2¯²</li>
+<li>浮点数默认 Double 即64位浮点数，也有Float 表示32位浮点数</li>
+<li>正则表达式字面量，&#x2F; 正则表达式 &#x2F;，&#x2F;(&#x2F; 匹配左括号，&#x2F;\d&#x2F; 匹配单个数字</li>
+</ul>
+<h3 id="2-3-类型"><a href="#2-3-类型" class="headerlink" title="2.3 类型"></a>2.3 类型</h3><ul>
+<li>可变参数，Int… 等同于 [Int]</li>
+<li>Void 是空元组类型 () 的别名</li>
+<li>多个 -&gt; 从右向左结合</li>
+<li>元类型，SomeClass.Type、SomeProtocal.Protocol</li>
+<li>对类型的实例使用 type(of:) 表达式来获取该实例动态的、在运行阶段的类型。<br>type(of: someInstance).printClassName()</li>
+<li>Self 引用当前类型</li>
+</ul>
+<h3 id="2-4-表达式"><a href="#2-4-表达式" class="headerlink" title="2.4 表达式"></a>2.4 表达式</h3><ul>
+<li>#function 作为方法的默认参数值，将返回调用函数的名字</li>
+<li>Key-path 表达式，所有类型都可以通过传递 key-path 参数到下标方法 subscript(keyPath:) 来访问它的值，例如</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">SomeStructure</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> someValue: <span class="type">Int</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> s <span class="operator">=</span> <span class="type">SomeStructure</span>(someValue: <span class="number">12</span>)</span><br><span class="line"><span class="keyword">let</span> pathToProperty <span class="operator">=</span> \<span class="type">SomeStructure</span>.someValue</span><br><span class="line"><span class="keyword">let</span> value <span class="operator">=</span> s[keyPath: pathToProperty]</span><br><span class="line"><span class="comment">// 值为 12</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>数组有filter方法，例如</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">toDoList.filter &#123; <span class="variable">$0</span>.completed &#125;.map &#123; <span class="variable">$0</span>.description &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>有 ++ 自增符</li>
+</ul>
+<h3 id="2-5-语句"><a href="#2-5-语句" class="headerlink" title="2.5 语句"></a>2.5 语句</h3><ul>
+<li>guard语句的退出，return、break、continue、throw</li>
+<li>@unknown default 匹配未来加入的枚举</li>
+<li>标签可以标注，循环和switch语句，break 和 continue 后都可以跟标签</li>
+<li>多个defer语句，最后面的先执行</li>
+<li>条件编译 #if 开始，#endif 结束。#if compiler(&gt;&#x3D;5)， #if swift(&gt;&#x3D;4.2)， #if compiler(&gt;&#x3D;5) &amp;&amp; swift(&lt;5)</li>
+<li>编译时诊断语句，可用性条件语句</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">#error</span>(<span class="string">&quot;error message&quot;</span>)</span><br><span class="line"><span class="keyword">#warning</span>(<span class="string">&quot;warning message&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">#available</span>(platform name version, <span class="operator">...</span>, <span class="operator">*</span>) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-声明"><a href="#2-6-声明" class="headerlink" title="2.6 声明"></a>2.6 声明</h3><ul>
+<li>rethrows 参数类型为抛出函数，仅能传递，自身不能抛出</li>
+<li>枚举支持递归，用 indirect 修饰符标记</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> 模块</span><br><span class="line"><span class="keyword">func</span> <span class="title function_">someFunction</span>(<span class="params">callback</span>: () <span class="keyword">throws</span> -&gt; <span class="type">Void</span>) <span class="keyword">rethrows</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> callback()</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">enum</span> <span class="title class_">Tree</span>&lt;<span class="title class_">T</span>&gt; &#123;</span><br><span class="line">	<span class="keyword">case</span> empty</span><br><span class="line">	<span class="keyword">indirect</span> <span class="keyword">case</span> node(value: <span class="type">T</span>, left: <span class="type">Tree</span>, right:<span class="type">Tree</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>dynamic 修饰符修饰任何兼容 Objective-C 的类的成员</li>
+<li>optional 只能将 optional 修饰符用于被 objc 特性标记的协议</li>
+</ul>
+<h3 id="2-7-特性"><a href="#2-7-特性" class="headerlink" title="2.7 特性"></a>2.7 特性</h3><ul>
+<li>available、unavailable</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入</span></span><br><span class="line">introduced: 版本号</span><br><span class="line"><span class="comment">// 弃用</span></span><br><span class="line">deprecated: 版本号</span><br><span class="line"><span class="comment">// 废弃</span></span><br><span class="line">obsoleted: 版本号</span><br><span class="line"><span class="comment">// 重命名</span></span><br><span class="line">renamed: 新名字</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ExampleClass</span>: <span class="title class_">NSObject</span> &#123;</span><br><span class="line">    <span class="keyword">@objc</span> <span class="keyword">var</span> enabled: <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="keyword">@objc(isEnabled)</span> <span class="keyword">get</span> &#123;</span><br><span class="line">            <span class="comment">// 返回适当的值</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>discardableResult 返回值没使用不会警告</li>
+<li>dynamicCallable 实例作为可调用的函数</li>
+<li>dynamicMemberLookup 运行时查找成员，配合 subscript 下标使用</li>
+<li>frozen 限制对类型修改</li>
+<li>objc 告诉编译器其可以在OC代码中使用</li>
+<li>propertyWrapper 属性包装器</li>
+<li>resultBuilder 结果构造器</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-09-15</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/专业技术/" title="专业技术">专业技术 </a><a class="tag" href="/tags/iOS/" title="iOS">iOS </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2023/09/15/iOS【Swift官方文档】第四篇/,容与的成长之路,iOS【Swift官方文档】第四篇,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/09/18/%E7%AE%97%E6%B3%95%E3%80%90%E8%85%BE%E8%AE%AF50%E9%A2%98Swift%E7%89%88%E3%80%91%E4%B8%8A%E7%AF%87/" title="算法【腾讯50题Swift版】上篇">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/09/10/iOS%E3%80%90Swift%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E3%80%91%E7%AC%AC%E4%B8%89%E7%AF%87/" title="iOS【Swift官方文档】第三篇">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
