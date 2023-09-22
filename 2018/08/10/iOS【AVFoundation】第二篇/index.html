@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>iOS【AVFoundation】第二篇 · 容与的成长之路</title><meta name="description" content="7 高级捕捉
+AVCaptureDevice 属性 videoZoomFactor，控制捕捉设备的缩放等级。最小1.0 最大由activeFormat属性确定，该属性是 AVCaptureDeviceFormat 类的实例，该类定义了属性 videoMaxZoomFactor。从哪个点放大，由 AV"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>iOS【AVFoundation】第二篇</a></h3></div><div class="post-content"><h3 id="7-高级捕捉"><a href="#7-高级捕捉" class="headerlink" title="7 高级捕捉"></a>7 高级捕捉</h3><ul>
+<li>AVCaptureDevice 属性 videoZoomFactor，控制捕捉设备的缩放等级。最小1.0 最大由activeFormat属性确定，该属性是 AVCaptureDeviceFormat 类的实例，该类定义了属性 videoMaxZoomFactor。从哪个点放大，由 AVCaptureDeviceFormat 类的 videoZoomFactorUpscaleThreshold 属性决定。</li>
+<li>修改缩放因子也需要锁定，rampToVideoZoomFactor:withRate:可实现随时间平滑缩放，rate设置1会每秒增加缩放因子一倍，通常设置为1.0到3.0之间。cancelVideoZoomRamp 方法取消缩放进程。</li>
+<li>可以用kvo监听 videoZoomFactor 和 rampingVideoZoom 属性的变化，来调整滑块显示值。</li>
+<li>AVCaptureMetadataOutput 可实现对10个人脸进行实时检测，人脸检测时输出 AVMetadataFaceObject类型。其中定义了人脸边界bounds(设备坐标系，右下角是(1,1))，roll angle 头想肩倾斜角度，yaw angle y轴旋转的角度。</li>
+<li>CALayer 的 sublayerTransform 属性，CATransform3D类型，可以对所有子层应用视角转换。应用3D动画绕y轴旋转，即透视变化，可以将图片的二维平面映射到三维空间。</li>
+<li>CATransform3D 的 m34 属性，应用视角转换，让子层围绕Y轴旋转。CATransform3DConcat 函数可以将两个变换关联在一起。</li>
+<li>条码扫描，一维条码8种（187页），二维码4种，QRCode是其中一种。</li>
+<li>设置设备的 autoFocusRangeRestriction 属性为 AVCaptureAutoFocusRangeRestrictionNear，缩小扫描区域，自动对焦近处的内容，提高识别率。</li>
+<li>扫描条码输出的实例 AVMetadataMachineReadableCodeObject，stringValue 属性，代表条码实际数据值，bounds 矩形边界，corners 数组，角点坐标，可以绘制与条码角落紧密对其的路径。</li>
+<li>角点坐标可转化为CGPoint，使用函数 CGPointMakeWithDictionaryRepresentation</li>
+<li>CAShapeLayer 是 CALayer子类，用于绘制Bezier路径。</li>
+<li>高帧率捕捉视频，可以在降低或提高播放速率时对音频播放设置算法(AVPlayerItem对象的audioTimePitchAlgorithm属性)，可以以固定帧率导出视频。</li>
+<li>AVCaptureDeviceFormat 的 videoSupportedFrameRateRanges属性，是AVFrameRateRange对象数组，其中有支持的最小帧率、最大帧率和时长信息。</li>
+<li>可以获取一个摄像头设备所支持的最大format和最大帧率范围。(工程SlowKamera，199页)</li>
+<li>AVFrameRateRange 的 minFrameDuration 属性，代表最大帧率倒数。如最大60fps，则最小帧时长是1&#x2F;60秒。</li>
+<li>AVCaptureVideoDataOutput 提供对捕捉到的视频数据更底层的控制，处理视频数据可用OpenGL ES 或 Core Image 。协议 AVCaptureVideoDataOutputSampleBufferDelegate，提供2个方法，一个输出视频帧，一个处理丢弃的视频帧。输出内容为 CMSampleBuffer 类型对象，包含一个 CVPixelBuffer，带有单帧原始像素数据。</li>
+<li>CVPixelBuffer 保存像素数据，可以操作图片内容，如添加灰度效果。</li>
+<li>CMSampleBuffer 还可以用 CMFormatDescription 对象形式来访问样本的细节信息。还有 CMVideoFormatDescription 和 CMAudioFormatDescription 获取音视频的细节。可用来区分音频和视频数据。</li>
+<li>CMSampleBuffer 还可以获取时间信息，2个函数可分别获取时间戳和解码时间戳。</li>
+<li>使用 CMAttachment 协议，可从 CMSampleBuffer 中读取Exif(可交换图片文件格式标签，记录数码照片的属性和拍摄数据)元数据。</li>
+<li>EAGLContext 该对象提供了用于管理状态的渲染上下文，和用 OpenGL ES 绘制所需的资源。</li>
+<li>摄像头二次抽样初始格式是420v，用OpenGL ES 会选用BGRA。</li>
+<li>CVOpenGLESTextureCacheRef 是Core Video像素buffer和OpenGL ES 贴图之间的桥梁。使用 CVOpenGLESTextureRef 可以从视频帧图像创建 OpenGL ES 贴图。</li>
+<li>通读各工程源码(CubeKamera_Final工程有应用OpenGL的示例，显示一个旋转的方块，不懂OpenGL，看不懂)</li>
+</ul>
+<h3 id="8-读取和写入媒体"><a href="#8-读取和写入媒体" class="headerlink" title="8 读取和写入媒体"></a>8 读取和写入媒体</h3><ul>
+<li>AVAssetReader 用于从AVAsset 中读取媒体样本，用 AVAssetReaderOutput实例通过方法访问音频样本和视频帧，其是抽象类，定义了3个具体实例来读取解码的媒体样本。<br>例如 AVAssetReaderTrackOutput 类，使用 AVAssetTrack 实例创建，并添加读取输出设置，该类可被添加到 AVAssetReader 对象上。</li>
+<li>AVAssetWriter 对媒体资源编码并写入容器文件。由 AVAssetWriterInput 对象配置。当配置处理的视频的 AVAssetWriterInput 时，会用到适配器对象 AVAssetWriterInputPixelBufferAdaptor。还可以用 AVAssetWriterInputGroup 组成互斥参数，包含在播放时使用的字幕音轨。</li>
+<li>AVAssetWriter 支持交叉媒体样本，AVAssetWriterInput 有 readyForMoreMediaData 属性，表示保持交错模式下输入信息是否还可以附加更多数据。</li>
+<li>AVAssetWriter 可用于实时和离线操作2种情况，实时写入数据优化了写入器，视频和音频以大致相同的速率捕捉。离线操作，需要观察 readyForMoreMediaData 属性的状态，提供方法，控制数据的提供。</li>
+<li>AVAssetTrack 表示资源其中的一个轨道，例如视频轨道、音频轨道。</li>
+<li>AVAssetWriter 可添加 AVAssetWriterInput 类，该类实例带有媒体类型和配置参数。</li>
+<li>AVAssetWriter 和 AVAssetExportSession 相比，可以进行更多的设置控制，例如关键帧间隔、视频比特率、像素宽高比、纯净光圈、H.264配置文件等。</li>
+<li>AVAssetWriter 和 AVAssetReader 组合使用，从非实时资源读取并写入样本时可用。(215页代码)</li>
+<li>图像化显示音频波形，第一步读取或解压音频数据。第二步缩减样本，分为小的样本块，找到块的最大样本、平均值、最大最小值。第三步绘制。</li>
+<li>CMSampleBufferGetImageBuffer 函数可检索到包含有帧的像素信息的 CVImageBufferRef。读取音频样本使用 CMSampleBufferGetDataBuffer 函数可以拿到 CMBlockBufferRef 的不保留引用，如果需要保留引用并对数据做处理，使用 CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer 函数拿到 AudioBufferList 。</li>
+<li>音频轨道输出的解压设置，读取音频样本数据(218、219页)</li>
+<li>缩减音频样本。（221页）</li>
+<li>abs 绝对值函数。</li>
+<li>CFSwapInt16LittleToHost 小端转为主机内置字节序。</li>
+<li>用 CoreGraphics 绘制波形。（工程 THWaveformView_Final）</li>
+<li>除了用OpenGL ES 处理视频帧的显示，也可以用 Core Image 处理实时视频帧。</li>
+<li>AVCaptureVideoDataOutput 类的属性 alwaysDiscardsLateVideoFrames，可捕捉全部帧，会增加内存消耗。</li>
+<li>CIImage 的 imageWithCVPixelBuffer 方法可以从 CVPixelBufferRef 对象创建一个CIImage。</li>
+<li>AVAssetWriterInput 类的属性 expectsMediaDataInRealTime 设置为YES 意思为针对实时性进行优化。</li>
+<li>AVAssetWriterInputPixelBufferAdaptor 对象提供一个优化的 CVPixelBufferPool 可创建 CVPixelBuffer 对象来渲染视频帧。</li>
+<li>使用 CMSampleBufferGetFormatDescription 函数从 CMSampleBufferRef 对象拿到 CMFormatDescriptionRef，再使用 CMFormatDescriptionGetMediaType 从 CMFormatDescriptionRef 拿到媒体类型信息 CMMediaType，即可判断类型是video 还是 audio 。</li>
+<li>录制视频加筛选器(工程 KameraWriter_Final)</li>
+<li>通读工程代码，其中有 NSRegularExpression 正则表达式和 NSTextCheckingResult类的用法。(工程 KameraWriter_Final)。切换几种调色器录制并保存。</li>
+</ul>
+<h3 id="9-媒体的组合和编辑"><a href="#9-媒体的组合和编辑" class="headerlink" title="9 媒体的组合和编辑"></a>9 媒体的组合和编辑</h3><ul>
+<li>组合资源，组合 AVComposition(AVAsset子类)、组合轨道 AVCompositionTrack、AVCompositionTrackSegment 实际媒体区域。AVMutableComposition 、AVMutableCompositionTrack 可操作轨道和轨道分段。</li>
+<li>NSTimeInterval 是双精度类型，无法应用于高级时基媒体的开发，会导致丢帧或音频丢失。使用CMTime数据类型作为时间格式，可表示特定的时间点或持续时间。</li>
+<li>CMTime 结构中 CMTimeFlags 表示指定状态，如判断数据是否有效、是否出现舍入值等。创建 CMTime 实例，使用 CMTimeMake 函数。视频常见时间刻度是600，音频时间刻度是采样率，如44100（44.1kHz）。</li>
+<li>CMTimeAdd、CMTimeSubtract 时间相加或相减，CMTimeShow 打印到控制台。</li>
+<li>CMTimeRange 时间范围，由2个 CMTime 组成，一个表示起点，一个表示持续时间。构建函数 CMTimeRangeMake 通过起点和持续时间构建，或 CMTimeRangeFromTimeToTime 通过起点和终点时间构建。</li>
+<li>CMTimeRangeGetIntersection 函数获取两个时间范围的交集，CMTimeRangeGetUnion 获取并集。</li>
+<li>创建资源用于组合时，使用 AVURLAsset，创建 AVURLAsset 实例可传入options参数，选项字典。AVURLAssetPreferpreciseDurationAndTimingKey 设置为@YES 代表可以计算出准确的时长和时间信息。</li>
+<li>组合资源，分别组合视频轨道和音轨。AVMutableComposition 可添加轨道对象，指明媒体类型和一个标识符，kCMPersistentTrackID_Invalid 标识符常量表示轨道ID以1···n排列。</li>
+<li>组合资源步骤，从资源提取视频轨道或音轨，从中提取给定时间范围和开始时间的片段，插入组合轨道中。其中给定的开始时间是指组合轨道的光标所在的时间。</li>
+<li>AVAssetExportSession 导出预设值还有 AVAssetExportPresetHighestQuality。AVAssetExportSession 对象还有 progress 属性，表示导出进度。</li>
+<li>工程代码（TimeChallenge），CMTime 和 NSValue 可以互转。CMTimeRange 也可以和 NSValue 互转。CMTime 和 CMTimeRange 还可以和字典互转。</li>
+<li>工程代码，可以静默 AVPlayerItem 的音轨，tracks属性拿到 AVPlayerItemTrack 设置该对象 enabled 为 NO。</li>
+<li>c语言的 static inline 内联函数。fminf函数返回2个浮点数中的较小者。</li>
+</ul>
+<h3 id="10-混合音频"><a href="#10-混合音频" class="headerlink" title="10 混合音频"></a>10 混合音频</h3><ul>
+<li>画外音持续期间将音乐调小，开始时声音渐渐增大结束时渐渐减小。AVAudioMix 类可以处理这两种情景。</li>
+<li>AVAudoioMix 输入参数集，AVAudioMixInputParameters 类型，其关联单独音轨。创建自定义混合音频时使用 AVMutableAudioMix 和 AVMutableAudioMixInputParameters。AVAudoioMix 对象可被用于 AVPlayerItem 或 AVAssetExportSession 用于播放和导出。</li>
+<li>可以用 AVMutableAudioMixInputParameters 修改音轨的音量，浮点数0到1，可以在某一时间点或一段时间内调节音量。</li>
+</ul>
+<h3 id="11-创建视频过渡效果"><a href="#11-创建视频过渡效果" class="headerlink" title="11 创建视频过渡效果"></a>11 创建视频过渡效果</h3><ul>
+<li>动态的视频过渡效果。AVVideoComposition，其对两个或多个视频组合在一起的方法给出一个总体描述，除了描述视频层组合信息之外，还包括配置视频组合的渲染尺寸，、缩放和帧时长等属性。AVVideoComposition 不是 AVComposition 子类，甚至没关联。</li>
+<li>AVVideoComposition 由 AVVideoCompositionInstruction 定义的指令组成的，提供时间范围信息。AVVideoCompositionLayerInstruction 应用模糊、变形、裁剪效果。可以用来在时间点或时间范围内对值进行修改，可以创建动态过渡，如溶解、渐淡效果。</li>
+<li>两个视频轨道错开布局，过渡时有时间重叠部分，计算不重叠部分和重叠部分的时间范围，有工具类可以排查计算时间范围出现的问题，Apple Developer Center 中 AVCompositionDebugViewer 项目，可视化呈现。</li>
+<li>不重叠部分添加一个 AVVideoCompositionLayerInstruction 指令，重叠部分也就是需要过渡的部分添加多个指令，设置为 AVVideoCompositionInstruction 对象的 layerInstructions 属性的值。</li>
+<li>AVMutableVideoComposition 属性有 instructions 数组表示指令集合，renderSize 表示渲染尺寸，对应视频原始尺寸。frameDuration 代表帧时长，renderScale 缩放，通常是1.0。</li>
+<li>便捷方式创建 AVVideoComposition ，有初始化方法，通过参数 AVComposition 创建。这种方式创建不能解决全部问题，如需要对时间范围和指令进行更多的控制时。</li>
+<li>AVMutableVideoComposition 对象的 videoCompositionWithPropertiesOfAsset 方法可以从AVMutableComposition 对象中创建出来 AVVideoComposition 对象，会自动创建所需的组合对象和层指令。</li>
+<li>3种过渡效果，溶解、推入、擦除。CGAffineTransform 可以修改层的转化、旋转、缩放。</li>
+</ul>
+<h3 id="12-动画图层内容"><a href="#12-动画图层内容" class="headerlink" title="12 动画图层内容"></a>12 动画图层内容</h3><ul>
+<li>Core Animation 创建高性能、基于GPU的动画效果。图层CALayer，一般是图片、Bezier路径，可设置背景颜色、透明度、角半径，几何属性如bounds、position.图层子类有CATextLayer、CAShapeLayer（渲染Bezier路径）。</li>
+<li>动画 CAAnimation ，常用子类 CABasicAnimation、CAKeyframeAnimation 。CABasicAnimation 用于实现简单动画，CAKeyframeAnimation 用于实现更高级的功能，例如图层沿着Bezier路径动态显示，可以指定时间和节奏。</li>
+<li>书上有一个用 CABasicAnimation 旋转一个图片的例子。(292页)</li>
+<li>AVSynchronizedLayer 用于与给定的 AVPlayerItem 对象同步时间。可以添加动画标题、水印、下沿字幕到播放视频中。</li>
+<li>AVVideoCompositionCoreAnimationTool 类，将动画图层整合到导出视频中。</li>
+<li>注意点，removedOnCompletion 应设置为 NO，动画完成之后不删除。beginTime 设置为 AVCoreAnimationBeginTimeAtZero 常量，可在影片开头加入动画。</li>
+<li>CALayer 对象的 allowsEdgeAntialiasing 属性设置为YES，边缘抗锯齿效果。</li>
+<li>CALayer 图层对象的 addAnimation:forKey: 方法，其中的key参数，是自己定义的字符串，用于后面识别或取回该动画。如果不需要，则赋值为nil即可。</li>
+<li>CMTimeGetSeconds 函数用于将CMTime值转换为浮点值float.</li>
+<li>创建视频动画时，不用 CAAnimationGroup 组合动画。</li>
+<li>CABasicAnimation 对象的 timingFunction 属性，设置一个时间函数，如淡入淡出曲线函数。属性 autoreverses 可以反向运行动画。</li>
+<li>CALayer 类属性 geometryFlipped，几何翻转。位置不会颠倒。</li>
+<li>如何将动画整合和视频整合导出（306页）</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-08-10</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/iOS/" title="iOS">iOS </a><a class="tag" href="/tags/音视频/" title="音视频">音视频 </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2018/08/10/iOS【AVFoundation】第二篇/,容与的成长之路,iOS【AVFoundation】第二篇,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2019/08/16/iOS%E3%80%90%E9%AB%98%E6%80%A7%E8%83%BDiOS%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E3%80%91/" title="iOS【高性能iOS应用开发】">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2018/08/04/iOS%E3%80%90AVFoundation%E3%80%91/" title="iOS【AVFoundation】">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

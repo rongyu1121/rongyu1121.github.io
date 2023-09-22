@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>iOS【52个方法】第三篇 · 容与的成长之路</title><meta name="description" content="27 扩展（匿名分类）
+oc动态消息系统决定了不可能实现真正的私有方法或实例变量。
+扩展定义在实现文件里，是唯一能声明实例变量的分类。其方法也应该定义在类的主实现文件里。该分类没有名字。其中可以定义方法和实例变量。
+这样定义的好处是可以将变量隐藏起来(也可以定义在实现块里，和定义在扩展里等效)，在公"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>iOS【52个方法】第三篇</a></h3></div><div class="post-content"><h3 id="27-扩展（匿名分类）"><a href="#27-扩展（匿名分类）" class="headerlink" title="27 扩展（匿名分类）"></a>27 扩展（匿名分类）</h3><ul>
+<li>oc动态消息系统决定了不可能实现真正的私有方法或实例变量。</li>
+<li>扩展定义在实现文件里，是唯一能声明实例变量的分类。其方法也应该定义在类的主实现文件里。该分类没有名字。其中可以定义方法和实例变量。</li>
+<li>这样定义的好处是可以将变量隐藏起来(也可以定义在实现块里，和定义在扩展里等效)，在公共接口里用@private，还是会泄露信息，外界会知道有个叫xx的类。</li>
+<li>定义在扩展里也不是真的私有，只是隐藏程度更好。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@implementation EOCPerson &#123;</span><br><span class="line">  int _anotherInstanceVariable;</span><br><span class="line">  /* 和定义在扩展里等效，但还是建议放扩展里，因为能将所有数据放一起 */</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>游戏后端用C++来写，.mm扩展名表示按oc++来编译。扩展在编写oc++代码时也有用。如果在公共接口里引入c++类，这就要求oc类也会被编译为oc++才行，引入该oc类的类也要按oc++来编译，最终导致所有类都要编译成oc++。用向前声明，将实例变量做成指针也不行。因为class关键字是c++的关键字，仍然需要按oc++来编译。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">class SomeCppClass;</span><br><span class="line">@interface EOCClass: NSObject &#123;</span><br><span class="line">@private</span><br><span class="line">  SomeCppClass * _cppClass;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用扩展，可以让头文件里没有c++代码，WebKit以及CoreAnimation都是内部用c++编写，但对外公布的接口是纯oc的。</li>
+<li>扩展还有个用处，就是属性外部只读，内部改为可读写。以便内部设置值。相当于内部重新声明一遍，只不过将读写特质改为可读写。这样内部可调用设置方法或点语法。</li>
+<li>只在实现文件中使用的私有方法也可定义在扩展中。方法名用p_前缀开头。现在可以不声明直接实现，但定义一下还是有好处的，可以使代码易读。</li>
+<li>扩展可声明遵从了私有协议，如果写在公共接口里，用向前声明 @protocol 以不引入协议所在的头文件。这样编译器还是会给出警告，看不到协议的定义，无法得知其中所含有的方法。</li>
+</ul>
+<h3 id="28-用协议提供匿名对象"><a href="#28-用协议提供匿名对象" class="headerlink" title="28 用协议提供匿名对象"></a>28 用协议提供匿名对象</h3><ul>
+<li>协议定义了方法，遵从协议就要实现他们，非可选就必须实现。返回id类型遵从协议的对象，这样类名就可隐藏。下面delegate就是匿名的。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, weak) id &lt;EOCDelegate&gt; delegate;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>字典对象也有例子，键是设置时拷贝，值是设置时保留。key参数是匿名对象，确定能给其发送拷贝消息就行了。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)setObject:(id)object forKey:(id&lt;NSCopying&gt;)key;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果没有办法令所有类都继承同一个基类，但这些类都具备某些方法。可以创建匿名对象将这些类包裹一下，使匿名对象成为其子类，遵从协议。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@protocol EOCDatabaseConnection</span><br><span class="line">- (void)connect;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@protocol EOCDatabaseConnection;</span><br><span class="line">@interface EOCDatabaseManager : NSObject</span><br><span class="line">+ (id)sharedInstance;</span><br><span class="line">- (id&lt;EOCDatabaseConnection&gt;)connectionWithIdentifier:(NSString*)identifier;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>协议表示对象不重要，对象遵从的方法重要。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">id &lt;NSFetchedResultsSectionInfo&gt; sectionInfo = sections[sections];</span><br><span class="line">NSUInteger num = sectionInfo.numberOfObjects;</span><br></pre></td></tr></table></figure>
+
+<h3 id="29-引用计数"><a href="#29-引用计数" class="headerlink" title="29 引用计数"></a>29 引用计数</h3><ul>
+<li>retain 递增引用计数，release 递减引用计数，autorelease 稍后清理自动释放池时，再递减。当引用计数归零，就被回收了。引用对象回溯的最终对象，iOS上是UIApplication对象，是应用程序启动时创建的单例。</li>
+<li>alloc方法返回的对象由调用者持有，其引用计数至少为1. 数组的addObject: 方法会在待添加的对象上增加引用，即数组引用着元素。</li>
+<li>释放之后再使用不一定会导致崩溃，其内存解除分配，只是放回可用内存池。如果使用时该内存还未被覆写，那么该对象依然有效，此时不会崩溃。过早释放导致的bug难以排查。</li>
+<li>release之后，将对象置为nil，可以避免出现指向无效对象，成为悬挂指针。</li>
+<li>属性特质为strong，在设置时会先保留新值，释放旧值，然后更新实例变量，顺序不能变。</li>
+<li>自动释放池通常在下一次事件循环释放。方法返回对象时常用，内部用autorelease。使对象超出方法边界而存在，除非自己写自动释放池，否则就是下一次事件循环时清空释放池。但是如果要持有此对象的话，就需要保留。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (NSString *)stringValue &#123;</span><br><span class="line">  NSString *str = [[NSString alloc] initWithFormat:@&quot;xxx: %@&quot;,self];</span><br><span class="line">  return [str autorelease];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">_instanceVariable = [[self stringValue] retain];</span><br><span class="line">[_instanceVariable release];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>循环引用会导致内存泄露，解决方法通常是用弱引用，或外界命令循环中的某对象不再引用另一个对象。</li>
+</ul>
+<h3 id="30-ARC"><a href="#30-ARC" class="headerlink" title="30 ARC"></a>30 ARC</h3><ul>
+<li>Clang编译器，自带一个静态分析器，可以分析出代码里引用计数出问题的地方。ARC的意思的引用和释放操作，它帮你做。ARC下不能调用retain、release、autorelease、dealloc方法。会产生编译错误。ARC调用的这些方法底层c语言版本，这样性能更好。例如调的是objc_retain.</li>
+<li>alloc、new、copy、mutableCopy 开头的方法名，其返回的对象归调用者持有。其他的则表示返回的对象不归调用者持有，会自动释放。(124页代码演示)</li>
+<li>ARC执行的优化，对同一个对象的多次保留与释放操作可能会被成对的移除。</li>
+<li>ARC在运行期组件的优化，ARC检测到autorelease和紧随其后的retain这一对多余的操作，会设置和检测全局数据结构中的一个标志位，来执行objc_autoreleaseReturnValue和objc_retainAutoreleasedReturnValue这一对函数，这比调用autorelease和retain更快。（126页代码演示）</li>
+<li>将内存管理交给编译器和运行期组件来做，可使代码得到多项优化。</li>
+<li>局部变量和实例变量是指向对象的强引用。ARC下的设置方法，先保留新值，释放旧值，最后设置实例变量。</li>
+<li>局部变量与实例变量的修饰符，__strong 保留，__unsafe_unretained 不保留，不安全，可能会使用对象已经回收的变量，__weak 不保留，安全，对象回收，变量自动清空。__autoreleasing 对象传递给方法做参数时用，方法返回时自动释放。</li>
+<li>用__weak 打破block引入的循环引用，因为block会保留捕获的对象，如果对象又引用了block，就会造成循环引用。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">EOCNetworkFetcher * __weak weakFetcher = fetcher;</span><br><span class="line">[fetcher startWithCompletion:^(BOOL success) &#123;</span><br><span class="line">  NSLog(@&quot;Finished fetching from %@&quot;, weakFetcher.url);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ARC在dealloc中插入释放实例变量的方法，生成清理代码。ARC下dealloc方法不能调用超类的dealloc方法，需要释放CoreFoundation对象或是有malloc()分配在堆上的内存。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)dealloc &#123;</span><br><span class="line">  CFRelease(_coreFoundationObject);</span><br><span class="line">  free(_heapAllocateMemoryBlob);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ARC能够优化retain\release\autorelease操作，使其不经过oc的消息派发机制，直接调用隐藏在运行期程序库的C函数。</li>
+</ul>
+<h3 id="31-dealloc方法中只释放引用和解除监听"><a href="#31-dealloc方法中只释放引用和解除监听" class="headerlink" title="31 dealloc方法中只释放引用和解除监听"></a>31 dealloc方法中只释放引用和解除监听</h3><ul>
+<li>CoreFoundation对象为什么要手动释放，因为他们是纯C的api生成的，不是oc对象。</li>
+<li>应该移除监听，例如通知、kvo观察者，发送通知给回收后的对象，会导致崩溃。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)dealloc &#123;</span><br><span class="line">  [[NSNotificationCenter defaultCenter] removeObserver: self];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>开销大或系统稀缺的资源，例如文件描述符、套接字、大块内存，应在用完资源就释放，不必等到dealloc时再释放。减少稀缺资源的保留时间。可使用自定义关闭方法，在这里清理资源。关闭需要在系统把对象回收之前调用。还有个原因是并不是每个对象都会执行dealloc，而是在应用程序终止时才将资源还给操作系统。系统有个程序终止时调用的方法。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)close;</span><br><span class="line"></span><br><span class="line">- (void)applicationWillTerminate:(UIApplication *)application</span><br></pre></td></tr></table></figure>
+<ul>
+<li>close方法和dealloc配合使用，防止忘记调用close。通常不应该在dealloc方法里调用其他方法，如果所调方法需要异步执行或调用自己的某些方法，等到任务执行完毕时，执行回调，当前对象可能已被销毁了，会使程序崩溃。</li>
+<li>还有个原因是调用的方法可能和对象回收操作，不在一个线程里。对象处于正在回收的状态，系统已改动了对象的内部数据结构。</li>
+<li>也不应该调用属性的存取方法，因为其内部可能在做在回收阶段无法安全执行的代码。若是属性处于kvo观测之下，观察者可能会在属性值改变时保留或使用这个即将回收的对象。这会导致错误。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)close &#123;</span><br><span class="line">  _close = YES;</span><br><span class="line">&#125;</span><br><span class="line">- dealloc &#123;</span><br><span class="line">  if (_close) &#123;</span><br><span class="line">    NSLog(@&quot;ERROR: close was not called before dealloc&quot;);</span><br><span class="line">    [self close];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="32-异常安全代码的内存管理问题"><a href="#32-异常安全代码的内存管理问题" class="headerlink" title="32 异常安全代码的内存管理问题"></a>32 异常安全代码的内存管理问题</h3><ul>
+<li>c++与oc都支持异常，且相互兼容。什么时候捕获异常，oc++编码、第三方库抛出的异常、系统库kvo注销尚未注册的观察者会抛出异常。</li>
+<li>try块中保留的对象，在释放之前抛出异常，会导致内存泄露。C++的析构函数由oc的异常处理例程来运行，发生异常时，必须析构，不然会泄露。文件句柄没正确清理，更易泄露。</li>
+<li>异常会令执行终止，并跳至catch块。可以使用@finally块，其中的代码一定会执行，且只运行一次。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@try &#123;</span><br><span class="line">  //创建某对象</span><br><span class="line">  [object doSomethingThatMayThrow];</span><br><span class="line">&#125;</span><br><span class="line">@catch (...) &#123;</span><br><span class="line">  NSLog(@&quot;Whoops, there was an error. Oh well...&quot;);</span><br><span class="line">&#125;</span><br><span class="line">@finally &#123;</span><br><span class="line">  [object release];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>假如try块逻辑复杂，容易忘记某个对象导致泄露。</li>
+<li>ARC下不会自动处理，将释放操作移动到@finally块中，如果这样做会严重影响性能。</li>
+<li>-fobjc-arc-exceptions 这个编译器标志是默认关闭的，因为oc中只有当程序必须终止才抛出异常，这时会否发生内存泄露已经不重要了。还去添加异常安全代码没有意义。</li>
+<li>oc++模式，会把该标志打开。因为c++处理异常与ARC实现的附加代码类似，所以开启性能损失不大，且c++频繁使用异常。</li>
+<li>ARC要捕获异常，要打开编译器标志。如果有大量异常，应该用NSError取代异常。</li>
+</ul>
+<h3 id="33-弱引用避免循环引用"><a href="#33-弱引用避免循环引用" class="headerlink" title="33 弱引用避免循环引用"></a>33 弱引用避免循环引用</h3><ul>
+<li>避免循环引用的最佳方法是弱引用，unsafe_unretained表示非拥有关系，但不安全，若其所指的对象被回收了，再用其调方法可能会使程序崩溃。</li>
+<li>unsafe_unretained 与 assign 等价，只是assign通常用于(int\float\结构体等)，unsafe_unretained则多用于对象类型。</li>
+<li>weak与unsafe_unretained作用完全相同，只是其所指对象被回收，属性值会自动置nil.</li>
+<li>weak比unsafe_unretained更安全，不至于使程序崩溃。</li>
+</ul>
+<h3 id="34-自动释放池块降低内存峰值"><a href="#34-自动释放池块降低内存峰值" class="headerlink" title="34 自动释放池块降低内存峰值"></a>34 自动释放池块降低内存峰值</h3><ul>
+<li>自动释放池存储在稍后某时释放的对象。清空自动释放池，会向其中的对象发送release方法。</li>
+<li>iOS系统主线程或GCD机制中的线程，都有默认的自动释放池。每次执行事件循环都会将其清空。main函数里创建自动释放池，包裹程序的主入口点。这个作为最外围捕捉全部自动释放对象所用的池。</li>
+<li>自动释放池嵌套，可以控制程序的内存峰值。for循环创建对象，可能会放自动释放池里，而自动释放池要等下一次事件循环才清空，这样会造成内存量持续上涨后又突然下降。</li>
+<li>内存峰值是指程序在某个时间段内的最大内存用量，新增自动释放池可以减少峰值。每次执行循环都会创建并清空自动释放池。</li>
+<li>自动释放池有一定的开销，尽量不要建立额外的自动释放池。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for (NSDictionary *record in databaseRecords) &#123;</span><br><span class="line">  @autoreleasepool &#123;</span><br><span class="line">    //创建对象加到数组里</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="35-僵尸对象调试内存管理问题"><a href="#35-僵尸对象调试内存管理问题" class="headerlink" title="35 僵尸对象调试内存管理问题"></a>35 僵尸对象调试内存管理问题</h3><ul>
+<li>向已回收的对象发消息不安全，取决于对象所占内存有无被其他内容覆写，若内存恰好存活的对象占据，运行期系统会把消息发给这个对象，这个对象也许能应答消息。</li>
+<li>僵尸对象调试功能开启，把已回收的对象转为僵尸对象，其内存无法使用不会被覆写，僵尸对象收到消息后会抛出异常，说明发送的消息以及回收之前的对象。NSZombieEnabled设为YES。给僵尸对方发生消息，程序会终止。</li>
+<li>xcode里scheme的 Enable Zombie Objects 选项。开启的话，系统在回收对象时会将对象转化为僵尸对象，而不彻底回收。（代码示例142页）</li>
+<li>运行期生成僵尸类，首次碰到某类的对象要变成僵尸对象时，会创建僵尸类，用的是运行期程序库的函数，可以操作类列表。僵尸类从名为_NSZombie的模板里创建出来，充当标记。</li>
+<li>运行期如果发现开启检测，用方法调配技术将dealloc方法替换成将待回收的对象转化为僵尸对象的方法。执行完之后，其类名已经变成僵尸类了。（_NSZombie_加原类名）创建新类名原因在于这样可以知道对象原来所属的类(用objc_duplicateClass()函数创建新类)。</li>
+<li>_NSZombie_类没有超类，也没实现方法，是个根类，只有一个实例变量_isa(所有oc类都有)，给该类发消息会经过完整的消息转发机制。</li>
+<li>转发中，___forwarding___函数会检查接受消息的对象所属的类名，若发现是僵尸对象，就需要特殊处理，将打印消息指明僵尸对象收到的消息和原来所属的类，然后程序终止。(代码145页)</li>
+</ul>
+<h3 id="36-不用retainCount"><a href="#36-不用retainCount" class="headerlink" title="36 不用retainCount"></a>36 不用retainCount</h3><ul>
+<li>ARC中已废弃该方法，这个方法不该调用。</li>
+<li>原因在于其返回的数量只是某个时间点的值，未考虑稍后的自动释放池清空操作。其未必能反应实际的计数。retainCount 数量不可能返回0，只有系统不优化时，该数值才可能返回0.</li>
+<li>字符串字面量和数字字面量创建的字符串和Number，都是单例对象，其引用计数都很大。编译器会把NSString对象表示的数据放到应用程序二进制文件里，而没有创建NSString对象。</li>
+<li>NSNumber则用标签指针标注特定类型的数值。其不使用NSNumber对象，而是把数值有关的全部消息都放到指针值里面。运行期消息派发时检测到标签指针，对它执行操作。浮点数类型不用这种方法，其引用计数为1.</li>
+<li>单例对象引用值不会变，单例之间的值也不相同。</li>
+<li>只是调试，也不该用retainCount方法，其值不准确。</li>
+</ul>
+<h3 id="37-块"><a href="#37-块" class="headerlink" title="37 块"></a>37 块</h3><ul>
+<li>多线程编程和核心是块与GCD，块可在C、C++、OC、OC++中使用，可将其像对象一样传递。GCD可以适时创建、复用、摧毁后台线程。</li>
+<li>Clang是开发iOS程序所用编译器，块是C语言层面的特性。块有其类型，实际是个值，可将其赋值给变量，语法和函数指针类似。</li>
+<li>下例中someBlock是变量名，void是返回类型，后面小括号内是参数。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void (^someBlock)() = ^&#123;</span><br><span class="line">  //块内容</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int (^addBlock)(int a, int b) = ^(int a, int b)&#123;</span><br><span class="line">  return a + b;</span><br><span class="line">&#125;;</span><br><span class="line">int add = addBlock(2, 5); //7</span><br><span class="line"></span><br><span class="line">__block NSUInteger count = 0;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>块可以捕获声明其范围内的所有变量。默认情况下，块捕获的变量，在块里不能修改。不然编译器会报错。声明变量时使用__block 修饰符，就可以在块内修改了。</li>
+<li>内联块，在函数里传入块作为参数。如果不用块，需要传入函数指针或选择子，代码松散，使用块可以将业务逻辑都放一起。</li>
+<li>块如果捕获对象，会自动保留。释放块时一并释放对象。块可视为对象，有引用计数。</li>
+<li>块总能修改实例变量，无需加__block，如果捕获对象的实例变量会把self一并捕获，因为实例变量与self所指代的实例是关联在一起的。直接访问实例变量和通过self访问是等效的。块捕获self会保留它，如果self也保留了块，会导致循环引用。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//@interface 某class</span><br><span class="line">- (void)anInstanceMethod &#123;</span><br><span class="line">  void (^someBlock)() = ^&#123;</span><br><span class="line">    _anInstanceVariable = @&quot;something&quot;;</span><br><span class="line">    //self-&gt;_anInstanceVariable = @&quot;something&quot;; 两种写法等效</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line">//@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>块本身是对象，有isa指针，指向Class对象。其中invoke是函数指针，指向块的实现代码。接受一个void*类型的变量，代表块。descriptor变量是结构体指针，其中有块的大小，还有copy和dispose两个辅助函数对应的函数指针。copy要保留捕获的对象，dispose释放。</li>
+<li>块会将捕获的变量拷贝一份，拷贝的不是对象本身，而是指向对象的指针变量。</li>
+<li>定义块的时候，内存分配在栈上。块只在定义它的范围内有效，下面的代码就可能出错。超出if的范围，块的内存可能被覆写掉。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">void (^block)();</span><br><span class="line">if (/* 某条件 */) &#123;</span><br><span class="line">  block = ^&#123;</span><br><span class="line">    NSLog(@&quot;Block A&quot;);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  block = ^&#123;</span><br><span class="line">    NSLog(@&quot;Block B&quot;);</span><br><span class="line">  &#125;;</span><br><span class="line">  /* block = [^&#123;</span><br><span class="line">    NSLog(@&quot;Block B&quot;);</span><br><span class="line">  &#125; copy];</span><br><span class="line">  复制后就不会出错了</span><br><span class="line">  */</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>给块对象发送copy消息，可以将块从栈复制到堆。拷贝后的块，可以在定义其的范围外使用。复制到堆上后，块就有引用计数了。后续的复制，只会递增其引用计数。ARC下块对象也会自动释放。copy见上面代码。</li>
+<li>全局块，不捕捉任何变量，其使用的内存区域在编译期确定。全局块声明在全局内存里。其拷贝是个空操作，实际上是单例。</li>
+</ul>
+<h3 id="38-块的typedef"><a href="#38-块的typedef" class="headerlink" title="38 块的typedef"></a>38 块的typedef</h3><ul>
+<li>给块类型起别名，使代码易读。修改块类型比较方便，例如加个参数，改后所有用到该类型的地方都会报同一种错误，可逐个修复。</li>
+<li>给同一个块起多个别名，用在不同地方。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef int(^EOCSomeBlock)(BOOL flag, int value);</span><br><span class="line">EOCSomeBlock block = ^(BOOL flag, int value)&#123;&#125;;</span><br><span class="line">//块作为参数</span><br><span class="line">- (void)startWithCompletionHandler:(void(^)(NSData *data, NSError *error))completion;</span><br><span class="line">typedef void(^EOCCompletionHandler)(NSData *data, NSError *error);</span><br><span class="line">- (void)startWithCompletionHandler:(EOCCompletionHandler)completion;</span><br></pre></td></tr></table></figure>
+
+<h3 id="39-handler块"><a href="#39-handler块" class="headerlink" title="39 handler块"></a>39 handler块</h3><ul>
+<li>iOS系统发现主线程阻塞一段时间后，会令其终止。用块来代替代理，代码较清晰易懂整洁。</li>
+<li>代理模式的缺点，如果有多个代理，要在回调方法里根据传入的代理切换不同的处理。这种做法，需要将多个代理保存为实例变量。而块可以将回调与创建对象放在一起。</li>
+<li>可以用两个块分别处理成功和失败的情况，也可以将成功和失败放一个块里。放一个块里更灵活，代码也更长。还有个好处是处理数据过程中发现错误，可以将其视为失败，这样可以方便的转化为错误情况。建议用同一个块处理成功与失败的情况。(代码159页)</li>
+<li>块可以指定在某队列执行，若没有安排队列，则由调用api的线程执行。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (id)addObserverForName:(NSString *)name object:(id)object queue:(NSOperationQueue *)queue usingBlock:(void(^)(NSNotification*))block;</span><br></pre></td></tr></table></figure>
+
+<h3 id="40-块与循环引用"><a href="#40-块与循环引用" class="headerlink" title="40 块与循环引用"></a>40 块与循环引用</h3><ul>
+<li>一个三方导致的循环引用，打破保留环的办法是将其中某个变量的引用置为nil。（代码163页）</li>
+<li>也可以在块执行后，将引用置为nil（代码165页）</li>
+<li>块作为参数而不是公共属性使用，因为公共属性是可以自由使用的，不能在内部将其清理掉，会破坏封装语义。</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-07-02</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/iOS/" title="iOS">iOS </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2018/07/02/iOS【52个方法】第三篇/,容与的成长之路,iOS【52个方法】第三篇,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2018/07/05/iOS%E3%80%9052%E4%B8%AA%E6%96%B9%E6%B3%95%E3%80%91%E7%AC%AC%E5%9B%9B%E7%AF%87/" title="iOS【52个方法】第四篇">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2018/07/01/iOS%E3%80%9052%E4%B8%AA%E6%96%B9%E6%B3%95%E3%80%91%E7%AC%AC%E4%BA%8C%E7%AF%87/" title="iOS【52个方法】第二篇">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>

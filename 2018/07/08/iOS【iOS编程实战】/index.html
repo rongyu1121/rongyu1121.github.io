@@ -1,0 +1,145 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>iOS【iOS编程实战】 · 容与的成长之路</title><meta name="description" content="1、2
+oc对象和cf对象，如果没所有权的变化，就无需用桥接转换。
+UIKit Dynamics。创建 UIDynamicAnimator 对象，添加到视图上，再给子视图添加行为。集合视图也有动力学行为，信息应用里有。
+UIMotionEffect。对视图做动画，是设备动作的函数。
+tintColo"><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的成长之路</a></h3><div class="description"><p>唯江上之清风，与山间之明月，吾与子所共适也。</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>iOS【iOS编程实战】</a></h3></div><div class="post-content"><h3 id="1、2"><a href="#1、2" class="headerlink" title="1、2"></a>1、2</h3><ul>
+<li>oc对象和cf对象，如果没所有权的变化，就无需用桥接转换。</li>
+<li>UIKit Dynamics。创建 UIDynamicAnimator 对象，添加到视图上，再给子视图添加行为。集合视图也有动力学行为，信息应用里有。</li>
+<li>UIMotionEffect。对视图做动画，是设备动作的函数。</li>
+<li>tintColor。给应用着色，子视图用父视图的 tintColor，用方法 tintColorDidChange 来更新变化。</li>
+<li>添加模糊图层，先截屏再加模糊效果（书籍附带的工程里，有代码示例）</li>
+</ul>
+<h3 id="3"><a href="#3" class="headerlink" title="3"></a>3</h3><ul>
+<li>+initialize 分类中不要实现，因为主类可能也有实现，会使用那个就无法确定了（会覆盖）。但是 + load方法 则是每个分类都可实现，都会运行，但不该手动调用。</li>
+<li>分类里声明属性，用关联对象实现其存取方法（代码26页），static char 类型变量做键。</li>
+<li>关联引用，关联里被附着的对象销毁，附着的对象也会释放。这个特点可以做调试用，通过的得知附着的对象销毁，推断出被附着的对象也销毁了。</li>
+<li>指针容器类，NSPointerArray、NSHashTable、NSMapTable 类似于 数组、set和字典。可以是持有弱引用，非对象的指针，其数组可存储NULL值。</li>
+<li>NSCache 搭配 NSPurgeableData 使用。通常内存吃紧，iOS会杀掉后台应用，使用NSPurgeableData 则会自己释放内存。</li>
+<li>CFStringTransform 可以实现中文转拉丁字母。去除重音符号（声调）。（代码29页）</li>
+<li>子类调用父类的方法，父类方法里是返回父类对象，实际得到的是子类对象。用instancetype，表示返回当前类。init开头的方法也这样用。</li>
+<li>可以控制需要百分号编码的字符，有方法。可以互相转换base64和NSData。</li>
+<li>firstObject，如果数组为空，会返回nil</li>
+</ul>
+<h3 id="4"><a href="#4" class="headerlink" title="4"></a>4</h3><ul>
+<li>故事板的缺点，多人开发合并冲突，难以解决。可以使用多个故事板，每模块一个。故事板可以自定义控制器之间的切换动画。</li>
+</ul>
+<h3 id="5"><a href="#5" class="headerlink" title="5"></a>5</h3><ul>
+<li>直接从文件系统取出UIImage对象比较耗时，应放在并发队列里做。collectionView里返回cell的方法里也应该这么做，不然可能会卡顿。同时用一个字典做缓存，优化性能。用字典和用NSCache类似，有键值。(书籍工程代码里有示例)。</li>
+<li>根据横竖屏使用不同识别符的cell，类可以是同一个（因为仅是image尺寸不一样）。根据宽高谁更大，决定是竖屏展示的图片还是横屏展示的图片，在图片全部加载时就拿到方向数据，存储在数组里。(书籍工程代码里有示例)</li>
+<li>设置选中时的背景视图。</li>
+<li>实现石工布局，自定义UICollectionViewLayout的子类，并计算每个item的位置宽高（书籍工程代码示例有MasonryLayoutDemo）</li>
+<li>封面浏览布局。（书籍工程代码示例有CoverFlowDemo）</li>
+</ul>
+<h3 id="6"><a href="#6" class="headerlink" title="6"></a>6</h3><ul>
+<li>关于自动布局约束，滚动视图怎么设置（66页）。使用可视格式化语言添加约束，不建议用，重构难。（67页）</li>
+</ul>
+<h3 id="7"><a href="#7" class="headerlink" title="7"></a>7</h3><ul>
+<li>OpenGL ES 是 OpenGL 绘图语言的子集，主要用来编写3d游戏。</li>
+<li>除了自定义视图，一般不需要调用setNeedDisplay方法，setNeedDisplay会在下一次绘图周期中重绘。只需要更新布局，可以调用。变化的视图会依次调用layoutSubviews方法。</li>
+<li>视图可以通过子视图、图层、drawRect:方法来表现内容。</li>
+<li>用贝塞尔曲线绘图，圆弧。（paths工程）</li>
+<li>rintf函数（四舍五入），π表示弧度，代表180度。0指向右，π&#x2F;2下，π或-π左，-π&#x2F;2上。</li>
+<li>坐标系或线宽不是整数或半整数的，线条可能会模糊，即使在视网膜屏上也是。</li>
+<li>UIViewContentModeRedraw，视图大小改变时，重新调用drawRect:方法</li>
+<li>floorf向下取整。CGAffineTransformMake(sx, 0.f, 0.f, sy, dx, dy)，sx表示水平方法的缩放，sy表示竖直方向的缩放，dx表示水平方向的偏移，dy表示竖直方向的偏移。第二和第三2个参数是表示旋转的。（transforms工程）</li>
+<li>floorl同是向下取整，只是返回的数字类型不同。</li>
+<li>绘制类似滚动的心电图，用CGPATH，时间轮询并重绘所有点，平移缩放绘制。（graph工程）</li>
+<li>UIKit和CoreGraphics 使用的坐标系不同，UIKit左上角为原点，CoreGraphics左下角为原点。使用 UIGraphicsGetCurrentContext 返回的上下文是正常的。如果用的是CGBitmapContextCreate 是左下角为原点。需要翻转（85页代码）</li>
+<li>CGContextSaveGState 和 CGContextRestoreGState 保存和恢复上下文，上下文里包含画笔颜色等。UIGraphicsPushContext 意为切换上下文。CoreGraphics不需要切换上下文，因为其将上下文视为参数。</li>
+<li>使用 UIGraphicsBeginImageContext 获取绘制的图片。（Drawing工程）</li>
+<li>避免重绘，图片要谨慎缓存，其重绘比缓存好。因为内存会飞速增加</li>
+<li>可以在后台线程绘制，需要在自己的CGContext中，而不是主视图图形上下文。</li>
+<li>CGRectIntegral()函数返回可以包住给定矩形的最小整形矩形大小</li>
+<li>alpha 为1，着色，为0不显示视图。opaque，意思为使用全不透明的颜色，可以改善性能，使用一个非透明的backgroundColor 可以确保绘制所有像素，可以搭配opaque使用。hidden代表不会绘制，等同于alpha&#x3D;0。动画中隐藏视图，用alpha值到0，因为hidden不能产生动画效果。</li>
+<li>隐藏和透明视图不接受触摸事件。可以用alpha 为1，opaque为NO且backgroundColor为nil或clearColor的视图来接受触摸事件。</li>
+</ul>
+<h3 id="8"><a href="#8" class="headerlink" title="8"></a>8</h3><ul>
+<li>UIView管理绘制和事件触摸，CALayer只关乎绘制。每个UIView都有一个CALayer用于绘制。</li>
+<li>图层的contents属性为CGImage，UIView会在可能需要绘制的时候绘制，CALayer会在要求绘制时绘制。</li>
+<li>图层的 contentsGravity 类似视图的填充模式。</li>
+<li>做翻转动画（layers工程）</li>
+<li>给可变字符串用字典填充属性，例如NSTextAlignmentCenter，可以使用NSMutableParagraphStyle。（layers工程）</li>
+<li>截取某视图，用UIView的UISnapshotting,drawViewHieraryAtRect:方法</li>
+<li>隐式动画，CATransaction（原子事务）。显式动画，CABasicAnimation，先创建对象然后添加到图层上。还有关键帧动画，CAKeyframeAnimation。</li>
+<li>动画是创建图层的副本并修改，属于表示层。动画完成后显示的状态由模型层决定。</li>
+<li>显式和隐式动画冲突时，关闭隐式动画。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[CATransaction begin];</span><br><span class="line">[CATransaction setDisableActions:YES];</span><br><span class="line">//做显式动画</span><br><span class="line">[CATransaction commit];</span><br></pre></td></tr></table></figure>
+<ul>
+<li>fillMode。kCAFillModeRemoved 动画执行前后不会对值有影响。kCAFillModeBackwards 动画前保持fromValue状态。kCAFillModeForwards 动画后保持toValue状态。kCAFillModeBoth 前两者结合。通常使用用kCAFillModeBackwards 或 kCAFillModeBoth。</li>
+<li>图层的position 意为中心点。CATransform3D 的 m34 属性，是摄像机的视角，通常值为 -1&#x2F;2000 就可以。</li>
+<li>CATransformLayer 可以设置 zPosition，画正方体也可以用这个。(Box和BoxTransform工程)</li>
+<li>CALayer可以设置圆角、边框、阴影（Decoraion工程）</li>
+<li>用actions属性为图层添加一组动画，为图层子类的自定义属性添加动画。</li>
+<li>图层的@dynamic属性，CALayer会自动生成存取方法，所以不要在图层中实现自定义的存取方法。</li>
+</ul>
+<h3 id="9"><a href="#9" class="headerlink" title="9"></a>9</h3><ul>
+<li>应用程序由一个阻塞状态的do&#x2F;while循环驱动，事件发生就把事件分派给监听器，处理分派的对象叫运行循环(run loop).每个线程都拥有自己的运行循环，动画也在后台线程运行。</li>
+<li>main.m 文件中的 UIApplicationMain 会运行主运行循环。NSTimer觊觎运行循环进行消息派发。</li>
+<li>操作队列和操作，支撑优先级、依赖关系和取消。</li>
+<li>用sysctlbyname计算cpu核心数。一个集合视图，用操作队列先显示分辨率低的图片，后显示分辨率高的图片。准备重用时cell会调用prepareForReuse（工程juliaOp）</li>
+<li>分派队列无法取消，无法设置优先级，先进先出。</li>
+<li>可以暂停和恢复队列，dispatch_suspend、 dispatch_resume.也会暂停以其为目标队列的队列。</li>
+<li>@synchronized 互斥锁，竞争很少时成本高。GCD屏障比较平衡。</li>
+<li>dispatch_group_notify 在组中没有任何要执行的块时，会立即调用。dispatch_group_wait 会阻塞线程，直到组执行完毕。</li>
+</ul>
+<h3 id="10"><a href="#10" class="headerlink" title="10"></a>10</h3><ul>
+<li>CoreFoundation中 只要含有Create、Copy 就需要调用CFRelease.</li>
+<li>给CFAllocatorRef 类型的参数传入NULL就表示使用默认的分配器。</li>
+<li>调用CFGetTypeID 来获取cf实例的类型。</li>
+<li>CFShow可以在控制台打印调试信息。</li>
+<li>用c字符串和Pascal风格创建CFStringRef。(工程里)</li>
+<li>将CF字符串转换回c字符串，多种方法。(工程里)</li>
+<li>创建cf数组和字典。(工程里)</li>
+<li>其他容器，如CFTree等</li>
+<li>CF字典能容纳NULL做为值或键，而CF数组不行。</li>
+<li>NS对象到CF类型 可以用__bridge 也可以什么都不加。(CFArrayRef)nsArray.</li>
+<li>在自己的代码中，遵守CF命名约定，然后用CF_IMPLICIT_BRIDGING_ENABLED 和 CF_IMPLICIT_BRIDGING_DISABLED 将函数声明包裹起来。</li>
+<li>将CF对象转到NS对象，如果有赋值或返回值的情况 __bridge 就不够用了，</li>
+<li>__bridge_transfer cf对象转到ns对象，交换所有权。__bridge_retained，ns对象转到cf对象，交换所有权。</li>
+<li>互相转换过后，都应将原变量置为nil或NULL.</li>
+<li>不显示支持桥接的类型也能桥接为NSObject，可以把CFTreeRef放在NSArray中。(工程里)</li>
+<li>CoreFoundation 更灵活，对内存管理控制权更多。其容器可以不保留成员，还能存储整数等非对象数据。</li>
+</ul>
+<h3 id="11"><a href="#11" class="headerlink" title="11"></a>11</h3><ul>
+<li>NSPurgeableData 是NSData对象，可以标记为可清除，用 endContentAccess，遇到内存压力时就会丢弃，即使应用是挂起状态。</li>
+<li>应用进入后台，imageName:方法加载的图片会自动丢弃，再次使用时重新从磁盘加载。位图缓存也会自动丢弃，唤醒应调用DrawRect方法。UIImageView 不会丢弃数据。</li>
+<li>后台运行时，必须停止更新OpenGL视图。applicationWillTerminate:方法调用之后，应用还会运行一小段时间，其实是出于后台状态，这时不应进行openGL调用，否则会立即终止应用。</li>
+<li>NSURLSession 可以配置为不用蜂窝网络。（143页）</li>
+<li>大量数据传输，用上传和下载任务，其可以后台传输。下载任务完成后存在Caches目录，需要把用 NSFileManager 把文件转移出来。NSURLSessionDownloadTask 创建后，执行resume方法开始下载。其回调处理块在后台队列执行，需要回到主线程更新UI. 会话不再重用需要取消。(代码144页)</li>
+<li>一个下载后台下载图片的示例（PicDownLoader工程）</li>
+<li>处理后台传输，可以设定更新数据的的最短时间。</li>
+<li>远程通知推送给用户的频率由苹果决定。（不是每发一条就立刻收到一条，可能会有延迟）</li>
+<li>状态恢复的测试流程，按下home键，xcode中终止应用，再重新运行应用。两个方法可以记录状态恢复的日志。（148页）</li>
+<li>AppDelegate 里2个方法用于开启状态恢复系统。（148页）</li>
+<li>每个视图控制器可以设置恢复标识符。以及几个UIKit视图也支持状态恢复，例如collectionView、tableView、imageView、scrollView、textView等。</li>
+<li>coreData也有唯一标识符，在进入后台时可以保存上下文。可以对数据库对象编解码。</li>
+<li>几种控制器内容的状态恢复方法。tableView和集合视图可以遵循UIDataSourceModelAssociation协议。（FavSpotsRestore工程）</li>
+<li>故事板设置状态恢复标志符比较方便，纯代码可以调用 setRestorationIdentifier: 方法设置。</li>
+</ul>
+<h3 id="12"><a href="#12" class="headerlink" title="12"></a>12</h3><ul>
+<li>REST（Representational State Transfer 表述性状态转移），W3C（万维网联盟），SOAP(简单对象访问协议)，WSDL(Web服务描述语言)</li>
+<li>REST式服务器，使客户端可根据URL进行缓存。数据格式常用XML(可扩展标记语言)和JSON（JavaScript 对象表示法）.</li>
+<li>解析XML，SAX解析器 NSXMLParser，给定一个URL，用代理式回调。</li>
+<li>DOM解析器，可以用XPath随机访问数据，不用使用代理委托。iOS中的DOM式解析可以使用基于libxml2的第三方库，如KissXML、GDataXML.DOM可以使代码简洁易读，推荐用DOM解析器。</li>
+<li>JSON解析，有苹果自带的 NSJSONSerialization 以及一些第三方库，建议用苹果自带的，不用JSONKit。可以用github上的 json-benchmarks 工程来比较各类框架的性能。</li>
+<li>JSON格式的数据其实在服务端也是对象序列化的结果。</li>
+<li>使用 MKNetworkKit 这个第三方框架，从服务端登录以及获取数据的用法。（其他类似框架如AFNetworking）</li>
+<li>为什么离开视图控制器要取消请求，可以使得下个控制器中存在队列中的数据请求更快响应。</li>
+<li>KVC处理json转模型，应编写一个基类处理KVC工作，少数工作子类来做。对模型复制，需要基类实现NSCopying和 NSMutableCopy 方法，子类覆盖实现自己的深复制方法。KVC实现主要是 setValuesForKeysWithDictionary 这个方法，可以把字典值赋值给类的属性。如果遇到模型缺少匹配键的属性的情况，需要在基类覆写setValue: forUndefinedKey: 方法，以防应用报异常。在其中打印出未识别的键就行。（模型映射框架如 Mantle 11.3k star 基于KVC）。（工程iHotelApp）</li>
+<li>可以将服务器错误相关信息放在plist文件中，以便于本地化显示错误信息。</li>
+<li>队列并发数最大值设置6，是因为服务器可能不允许同一个ip出现大于6个并发请求，7个以上会导致超时。wifi下不要超过6个，运营商网络限制。</li>
+<li>缓存策略：按需缓存和预缓存。按需缓存是对每次请求的一块数据缓存起来，当数据不存在时才下载。预缓存就是全下载，稍后再看。按需缓存可用CoreData.</li>
+<li>缓存数据保存在 NSCachesDirectory 可以为其创建独立目录，存在 Library&#x2F;caches 文件夹下。如果存在Documents下会被上传至iCloud。</li>
+<li>预缓存可用SQLite 或 Core Data 实现。</li>
+<li>NSKeyedArchiver 归档 可以缓存数据模型。遵循NSCoding协议。NSKeyedUnarchiver 反归档。</li>
+<li>CoreData 优势是可以实现独立访问模型属性。SQLite 比不上 coreData, 速度慢，非线程安全。</li>
+<li>CoreData 版本之间的数据迁移简单。</li>
+<li>归档数据是写入到闪存的，频繁读写闪存会降低性能。可以利用内存和闪存结合的方式改善性能。内存即是将数据存在 static字典 里的形式，闪存是指存到文件系统。可以用最近最少使用策略存到闪存。并在系统内存警告通知时，将内存数据写入闪存。</li>
+<li>nginx.conf 文件 设置过期时间。缓存控制头，把下列结尾的文件缓存7天。</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.(jpg|gif|png|ico|jpeg|css|swf)$ &#123;</span><br><span class="line">  expires 7d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以用URL缓存来缓存图片。</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2018-07-08</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/iOS/" title="iOS">iOS </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2018/07/08/iOS【iOS编程实战】/,容与的成长之路,iOS【iOS编程实战】,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2018/07/16/iOS%E3%80%90iOS%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E3%80%91%E7%AC%AC%E4%BA%8C%E7%AF%87/" title="iOS【iOS编程实战】第二篇">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2018/07/05/iOS%E3%80%9052%E4%B8%AA%E6%96%B9%E6%B3%95%E3%80%91%E7%AC%AC%E5%9B%9B%E7%AF%87/" title="iOS【52个方法】第四篇">下一篇</a></li></ul></div></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
