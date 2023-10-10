@@ -1,0 +1,92 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author"><title>Swift【SwiftUI与Combine编程】 · 容与的技术博客</title><meta name="description" content="1
+指令式编程 imperative，C、C++，写给计算机的语言
+声明式编程 declarative，用DSL或函数式编程实现，函数式编程用 reduce、map、sorted 等，写给人看的语言
+DSL Domain-Specific Language 领域特定语言，代表SQL
+Combine "><meta name="keywords"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo@2x.png" style="width:127px;"><h3 title=""><a href="/">容与的技术博客</a></h3><div class="description"><p>世界正在偷偷奖励用心的人</p></div></div></div><ul class="social-links"></ul><div class="footer"><a target="_blank" href="/"><span>Theme by </span></a><a target="_blank" rel="noopener" href="https://www.caicai.me"> CaiCai </a><span>&</span><a target="_blank" rel="noopener" href="https://github.com/Ben02/hexo-theme-Anatole"> Ben</a><div class="by_farbox"><a href="https://hexo.io/zh-cn/" target="_blank">Proudly published with Hexo&#65281;</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"></a></li></div><div class="avatar"><img src="/asset/avatar.JPG"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>Swift【SwiftUI与Combine编程】</a></h3></div><div class="post-content"><h5 id="1"><a href="#1" class="headerlink" title="1"></a>1</h5><ul>
+<li>指令式编程 imperative，C、C++，写给计算机的语言</li>
+<li>声明式编程 declarative，用DSL或函数式编程实现，函数式编程用 reduce、map、sorted 等，写给人看的语言</li>
+<li>DSL Domain-Specific Language 领域特定语言，代表SQL</li>
+<li>Combine 响应式编程框架 ，处理数据流</li>
+<li>FRP Functional reactive programming 函数响应式编程</li>
+<li>枚举遵从 CaseIterable 协议，有allCases 属性，返回所有枚举类型组成的数组</li>
+<li>元组取下标，用的是点语法，temp.1</li>
+<li>reduce(0, +) ，数组取第一个 .first</li>
+<li>声明式UI起源Elm语言，后继者 React的Component、Flutter的Widget</li>
+<li>Redux、Flux 思想来源 Elm，状态管理和组件通信架构，Store、State、Action。在大中型项目中应用可以，小项目应用由于其引入的复杂度会得不偿失。</li>
+<li>SwiftUI 和 UIKit 可以兼容使用</li>
+</ul>
+<h5 id="2"><a href="#2" class="headerlink" title="2"></a>2</h5><ul>
+<li>刷新预览的快捷键是 Option + Command + P</li>
+<li>Text 有属性 font，foregroundColor，padding、background，.minimumScaleFactor(0.5)缩放系数  .lineLimit(1) 限制一行，传入nil不限制。foregroundColor 可以设置.primary 能自适应亮暗模式。</li>
+<li>字体还有 .headline，.body 等，按数值指定 .font(.system(size: 48))、自定义字体 .font(.custom(“Copperplate”, size: 48))。使用预定义字体可适配动态类型特性。</li>
+<li>Color(_:red:green:blue:) 提供色彩空间和 RGB 值来设置颜色。可以颜色名字从 Assets.xcassets 中加载颜色，Color(“colorName”)</li>
+<li>使用 Assets.xcassets 颜色的好处，可以根据设备类型设置不同颜色，为亮暗设置不同颜色，可以用16进制定义</li>
+<li>.padding(.top, 16) .padding(.horizontal, 8) 等同 [.leading, .trailing] 都是8。.padding(.trailing, 24)</li>
+<li>封装类的 modifier 的顺序重要，例如 padding，background</li>
+<li>.frame(width: 88, height: 88) 指定尺寸，frame(minWidth: 0, maxWidth: .infinity, alignment: .trailing) 指定最小最大宽，对其方式</li>
+<li>.clipShape(Circle()) 正方形内画圆，.clipShape(Capsule()) 胶囊形状</li>
+<li>Button.init(action:label:) label 接受一个闭包，是一个 ViewBuilder。或一个 title 一个 action</li>
+<li>可以使用 CGFloat CGSize，可以遵从 View 协议自定义 View</li>
+<li>ForEach 列举元素，数组中元素需遵从 Identifiable 协议，或通过 ForEach(row, id: .self) 让元素支持 Hashable 也可以。</li>
+<li>VStack、HStack，VStack(spacing: 8) 指定间距，VStack(alignment: .trailing) 指定对齐方式</li>
+<li>if case 匹配的用法</li>
+<li>Spacer() 可伸缩空白</li>
+<li>.scaleEffect(scale) 做缩放</li>
+</ul>
+<h5 id="3-数据状态和绑定"><a href="#3-数据状态和绑定" class="headerlink" title="3 数据状态和绑定"></a>3 数据状态和绑定</h5><ul>
+<li>限定小数格式，例如8位以内。</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formatter: <span class="type">NumberFormatter</span> <span class="operator">=</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> f <span class="operator">=</span> <span class="type">NumberFormatter</span>()</span><br><span class="line">    f.minimumFractionDigits <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">    f.maximumFractionDigits <span class="operator">=</span> <span class="number">8</span></span><br><span class="line">    f.numberStyle <span class="operator">=</span> .decimal</span><br><span class="line">    <span class="keyword">return</span> f</span><br><span class="line">&#125;()</span><br><span class="line"><span class="comment">//将Double类型的 value 转为字符串</span></span><br><span class="line">formatter.string(from: value <span class="keyword">as</span> <span class="type">NSNumber</span>)<span class="operator">!</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Double(result) 将字符串转为浮点数，可失败构造器</li>
+<li>字符串String 有 contains(“.”) 方法，是否包含某字符串，返回Bool类型。遵从序列化协议 Sequence 的类型，有starts(with: “-“)，是否以某个内容开头。字符串、数组都可以用</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> b <span class="operator">=</span> [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</span><br><span class="line">b.starts(with: [<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line"><span class="comment">//返回true，传入空数组[] 也会返回 true</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>可选值类型，可使用map，例如下例转浮点数为字符串，返回值也是可选类型</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> result: <span class="type">Double</span>? <span class="operator">=</span> <span class="number">3.14</span></span><br><span class="line">result.map &#123; <span class="type">String</span>(<span class="variable">$0</span>) &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>纯函数：返回值只依赖入参，不改变其外部作用域的变量状态的函数</li>
+<li>@State 修饰，内部会被转换为一对 setter 和 getter，其赋值操作会引起界面刷新。</li>
+<li>@Binding 修饰，将值语义的属性 “转换” 为引用语义，传递属性时，使用$符号，称为投影属性（projection property）</li>
+<li>@State 和 @Binding 都是属性包装（Property Wrapper），属性包装可以简化代码。一段示例（77页）</li>
+<li>@State 适合 struct 或者 enum 这样的值类型，局限在body中使用，需要再view外部操作数据就不行。如果需要多个view共享和更改数据模型，使用ObservableObject。</li>
+<li>遵从ObservableObject 协议，调用 objectWillChange.send() 或使用 @Published 修饰 都可以在属性发生改变时，去更新UI</li>
+<li>数组 .joined() 合并为字符串。数组取片段的用法，下例。</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">history <span class="operator">=</span> <span class="type">Array</span>(total[<span class="operator">..&lt;</span>index])</span><br><span class="line">temporaryKept <span class="operator">=</span> <span class="type">Array</span>(total[index<span class="operator">...</span>])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>reduce 用法，一种。</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brain <span class="operator">=</span> history.reduce(<span class="type">CalculatorBrain</span>.left(<span class="string">&quot;0&quot;</span>), &#123; result, item <span class="keyword">in</span></span><br><span class="line">            result.apply(item: item)</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Slider 滑块用法，接受一个绑定值 Binding</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Slider</span>(value: <span class="variable">$model</span>.slidingIndex, in: <span class="number">0</span><span class="operator">...</span><span class="type">Float</span>(model.totalCount), step: <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>按钮 modal 行为展示视图</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Button</span>(<span class="string">&quot;操作履历：<span class="subst">\(model.history.count)</span>&quot;</span>) &#123;</span><br><span class="line">                <span class="keyword">self</span>.editingHistory <span class="operator">=</span> <span class="literal">true</span></span><br><span class="line">            &#125;.sheet(isPresented: <span class="keyword">self</span>.<span class="variable">$editingHistory</span>, content: &#123;</span><br><span class="line">                <span class="type">HistoryView</span>(model: <span class="keyword">self</span>.model)</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>@EnvironmentObject 可以在view层级上避免不必要的属性传递，在初始化父视图的地方初始化数据，在深层子层级上可以直接使用。</li>
+</ul>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-09-27</span><i class="fa fa-tag"></i><a class="tag" href="/tags/图书/" title="图书">图书 </a><a class="tag" href="/tags/iOS/" title="iOS">iOS </a><a class="tag" href="/tags/Swift/" title="Swift">Swift </a></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="javascript:(function(){EN_CLIP_HOST='http://www.evernote.com';try{var%20x=document.createElement('SCRIPT');x.type='text/javascript';x.src=EN_CLIP_HOST+'/public/bookmarkClipper.js?'+(new%20Date().getTime()/100000);document.getElementsByTagName('head')[0].appendChild(x);}catch(e){location.href=EN_CLIP_HOST+'/clip.action?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title);}})();" ref="nofollow" target="_blank"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://rongyu1121.github.io/2023/09/27/Swift【SwiftUI与Combine编程】/,容与的技术博客,Swift【SwiftUI与Combine编程】,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/10/10/%E3%80%90%E7%AE%80%E5%8E%86%E9%A1%B9%E7%9B%AE%E5%B1%95%E7%A4%BA%E3%80%91/" title="【简历项目展示】">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/09/20/%E7%AE%97%E6%B3%95%E3%80%90%E8%85%BE%E8%AE%AF50%E9%A2%98Swift%E7%89%88%E3%80%91%E4%B8%8B%E7%AF%87/" title="算法【腾讯50题Swift版】下篇">下一篇</a></li></ul></div><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:false || false, 
+  verify:false|| false, 
+  app_id:'3ldp5kbv2NVrzMUiI2fxPSJp-gzGzoHsz',
+  app_key:'rNajYGquDlU2BQ6rVQzWz1KD',
+  placeholder:'请输入评论内容',
+  path: window.location.pathname,
+  avatar:'mp'
+})
+
+</script></div></div></div></div><script src="/js/jquery.js"></script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script></body></html>
